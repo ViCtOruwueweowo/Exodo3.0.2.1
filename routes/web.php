@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\ActorController;
+
+
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\FilmActorController;
@@ -34,6 +38,15 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
+
+Route::get('/actors', [ActorController::class, 'index'])->name('actors.index');
+Route::get('/actors/create', [ActorController::class, 'create'])->name('actors.create');
+Route::post('/actors', [ActorController::class, 'store'])->name('actors.store');
+
+Route::get('/actors/{actor}/edit', [ActorController::class, 'edit'])->name('actors.edit');
+Route::put('/actors/{actor}', [ActorController::class, 'update'])->name('actors.update');
+Route::delete('/actors/{actor}', [ActorController::class, 'destroy'])->name('actors.destroy');
+
 
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');

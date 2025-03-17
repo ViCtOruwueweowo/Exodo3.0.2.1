@@ -39,6 +39,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('actors.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Actores</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{{ route('customers.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
