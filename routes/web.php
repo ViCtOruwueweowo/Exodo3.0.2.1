@@ -1,6 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FilmController;
+use App\Http\Controllers\FilmActorController;
+use App\Http\Controllers\FilmCategoryController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
+
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/films', [FilmController::class, 'index'])->name('films.index');
+Route::get('/film-actors', [FilmActorController::class, 'index'])->name('film_actors.index');
+Route::get('/film-categories', [FilmCategoryController::class, 'index'])->name('film_categories.index');

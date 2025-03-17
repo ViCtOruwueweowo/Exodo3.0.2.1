@@ -39,6 +39,36 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('customers.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Clientes
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('films.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-film"></i>
+                    <p>Películas</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('film_actors.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user-tag"></i>
+                    <p>Relación Películas - Actores</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('film_categories.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p>Relación Películas - Categorías</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle nav-icon"></i>
                     <p>
