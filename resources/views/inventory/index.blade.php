@@ -43,7 +43,7 @@
                 @foreach($inventories as $inventory)
                     <tr>
                         <td>{{ $inventory->inventory_id }}</td>
-                        <td>{{ $inventory->film_id }}</td>
+                        <td>{{ $inventory->film->title}}</td>
                         <td>{{ $inventory->store_id}}</td>
                         <td>
                             <!-- Formulario para eliminar la película -->
@@ -52,6 +52,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este elemento del inventario?')">Eliminar</button>
                             </form>
+                            <a type="button" href="{{ route('inventory.edit', $inventory->inventory_id) }}" class="btn btn-outline-warning">Editar</a><br><br>
                         </td>
                     </tr>
                 @endforeach

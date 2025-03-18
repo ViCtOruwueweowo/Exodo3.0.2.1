@@ -106,7 +106,11 @@ Route::get('films/show', [FilmTextController::class, 'showAllFilms'])->name('fil
 
 Route::get('inventory', [InventoryController::class, 'showAllInventory'])->name('inventarios.show');
 Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventario.create');
+Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+Route::get('/inventory/{inventory_id}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+Route::put('/inventory/{inventory_id}', [InventoryController::class, 'update'])->name('inventory.update');
 Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventarios.destroy');
+
 
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/create', [StoreController::class, 'create'])->name('store.create');
