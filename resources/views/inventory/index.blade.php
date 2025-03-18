@@ -21,7 +21,7 @@
 <body>
 
 <div class="container mt-5">
-<a href="{{ route('inventario.create') }}" class="btn btn-outline-primary">Agregar</a>
+<a href="{{ route('inventario.create') }}" class="btn btn-primary">Agregar</a>
 <br><br>
     @if(session('success'))
         <div class="alert alert-success">
@@ -50,9 +50,9 @@
                             <form action="{{ route('inventarios.destroy', $inventory->inventory_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este elemento del inventario?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este elemento del inventario?')">Eliminar</button>
                             </form>
-                            <a type="button" href="{{ route('inventory.edit', $inventory->inventory_id) }}" class="btn btn-outline-warning">Editar</a><br><br>
+                            <a type="button" href="{{ route('inventory.edit', $inventory->inventory_id) }}" class="btn btn-warning">Editar</a><br><br>
                         </td>
                     </tr>
                 @endforeach

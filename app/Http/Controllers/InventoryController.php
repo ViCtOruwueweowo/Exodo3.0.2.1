@@ -7,6 +7,7 @@ use App\Models\Film;
 use App\Models\Store;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Rental;
 
 class InventoryController extends Controller
 {
@@ -93,6 +94,6 @@ class InventoryController extends Controller
         $inventory->delete();
 
         // Redirigimos con un mensaje de éxito
-        return redirect()->route('inventory.index')->with('success', 'Inventario eliminado con éxito');
+        return redirect()->route('inventarios.show')->with('success', 'Inventario eliminado con éxito');
     }
 }
