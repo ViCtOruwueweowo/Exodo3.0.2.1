@@ -15,12 +15,18 @@ use App\Http\Controllers\LanguageController;
 use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
+<<<<<<< HEAD
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\RentalController;
+=======
 
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RentalController;
 
 
+>>>>>>> 4cadf999b074d9ad052d555532be1cbd51fa1c10
 /*
 |--------------------------------------------------------------------------
 | Web Routes

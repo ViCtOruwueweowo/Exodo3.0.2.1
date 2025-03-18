@@ -129,6 +129,27 @@
                     <p>Relación Películas - Categorías</p>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a href="{{ route('store.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p>Store</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('staff.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p>Staff</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('rentals.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-tags"></i>
+                    <p>Rental</p>
+                </a>
+            </li>
  <!-- 
             <li class="nav-item">
                 <a href="#" class="nav-link">
