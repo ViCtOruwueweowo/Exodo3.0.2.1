@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ActorController;
+use App\Http\Controllers\CategoryController;
 
 
 use App\Http\Controllers\CustomerController;
@@ -42,10 +43,18 @@ Route::middleware('auth')->group(function () {
 Route::get('/actors', [ActorController::class, 'index'])->name('actors.index');
 Route::get('/actors/create', [ActorController::class, 'create'])->name('actors.create');
 Route::post('/actors', [ActorController::class, 'store'])->name('actors.store');
-
 Route::get('/actors/{actor}/edit', [ActorController::class, 'edit'])->name('actors.edit');
 Route::put('/actors/{actor}', [ActorController::class, 'update'])->name('actors.update');
 Route::delete('/actors/{actor}', [ActorController::class, 'destroy'])->name('actors.destroy');
+
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+
 
 
 

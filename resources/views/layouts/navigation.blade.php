@@ -46,6 +46,15 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('categories.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>Categorías</p>
+                </a>
+            </li>
+
+
+
+            <li class="nav-item">
                 <a href="{{ route('customers.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
                     <p>
