@@ -16,4 +16,10 @@ class Inventory extends Model
 
     protected $fillable = ['store_id', 'film_id'];
     public $timestamps = false; // Si no tienes las columnas 'created_at' y 'updated_at'
+
+    // Relación belongsTo con Film
+    public function film()
+    {
+        return $this->belongsTo(Film::class, 'film_id'); // 'film_id' es el nombre del campo en la tabla `inventory` que hace referencia a `film`
+    }
 }

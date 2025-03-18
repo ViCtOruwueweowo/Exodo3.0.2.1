@@ -25,4 +25,9 @@ class Store extends Model
     {
         return $this->belongsTo(Address::class, 'address_id');
     }
+
+    public function customers()
+    {
+        return $this->hasMany(Customer::class, 'store_id');
+    }
 }

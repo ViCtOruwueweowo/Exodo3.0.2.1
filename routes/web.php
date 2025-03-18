@@ -15,9 +15,18 @@ use App\Http\Controllers\LanguageController;
 use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
+<<<<<<< HEAD
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RentalController;
+=======
+
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\RentalController;
+
+
+>>>>>>> 4cadf999b074d9ad052d555532be1cbd51fa1c10
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -103,7 +112,11 @@ Route::get('films/show', [FilmTextController::class, 'showAllFilms'])->name('fil
 
 Route::get('inventory', [InventoryController::class, 'showAllInventory'])->name('inventarios.show');
 Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventario.create');
+Route::post('/inventory/store', [InventoryController::class, 'store'])->name('inventory.store');
+Route::get('/inventory/{inventory_id}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+Route::put('/inventory/{inventory_id}', [InventoryController::class, 'update'])->name('inventory.update');
 Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventarios.destroy');
+
 
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/create', [StoreController::class, 'create'])->name('store.create');
@@ -125,3 +138,11 @@ Route::post('/rentals', [RentalController::class, 'store'])->name('rentals.store
 Route::get('/rentals/{rental}/edit', [RentalController::class, 'edit'])->name('rentals.edit');
 Route::put('/rentals/{rental}', [RentalController::class, 'update'])->name('rentals.update');
 Route::delete('/rentals/{rental}', [RentalController::class, 'destroy'])->name('rentals.destroy');
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');       
+Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create'); 
+Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');        
+Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');  
+Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit'); 
+Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update'); 
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy'); 

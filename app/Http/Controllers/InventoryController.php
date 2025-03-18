@@ -21,6 +21,11 @@ class InventoryController extends Controller
      {
          // Obtener todos los registros de la tabla 
          $inventories = Inventory::all();
+
+         // Obtener todos los inventarios con sus respectivas películas asociadas
+         $inventories = Inventory::with('film')->get();
+
+         $stores = Store::all(); // Obtener todas las tiendas
          // Retornar la vista y pasar los datos
          return view('inventory.index', compact('inventories'));
      }
@@ -34,48 +39,60 @@ class InventoryController extends Controller
          return view('inventory.create', compact('films', 'stores'));
      }
  
-     // Almacenar un nuevo inventario
      public function store(Request $request)
      {
+         // Validación de los datos
          $request->validate([
-             'film_id' => 'required|exists:films,film_id',
-             'store_id' => 'required|exists:stores,store_id',
+             'film_id' => 'required|exists:film,film_id', // Verifica si el `film_id` existe en la tabla `films`
+             'store_id' => 'required|exists:store,store_id', // Verifica si el `store_id` existe en la tabla `stores`
+         ]);
+         
+         // Crear el nuevo inventario
+         Inventory::create([
+             'film_id' => $request->film_id, // Asignar el film_id
+             'store_id' => $request->store_id, // Asignar el store_id
          ]);
  
-         Inventory::create($request->all());
- 
-         return redirect()->route('inventory.index')->with('success', 'Inventario creado con éxito');
+         // Redirigir a la lista de inventarios con un mensaje de éxito
+         return redirect()->route('inventarios.show')->with('success', 'Inventario creado con éxito');
      }
  
-     // Mostrar el formulario para editar un inventario existente
-     public function edit($id)
-     {
-         $inventory = Inventory::findOrFail($id);
-         $films = Film::all();
-         $stores = Store::all();
-         return view('inventory.edit', compact('inventory', 'films', 'stores'));
-     }
+    // Mostrar el formulario de edición
+    public function edit($inventory_id)
+    {
+        $inventory = Inventory::findOrFail($inventory_id); // Obtener el inventario por su ID
+        $films = Film::all(); // Obtener todas las películas
+        $stores = Store::all(); // Obtener todas las tiendas
+
+        return view('inventory.edit', compact('inventory', 'films', 'stores'));
+    }
+
  
      // Actualizar un inventario
      public function update(Request $request, $id)
      {
          $request->validate([
-             'film_id' => 'required|exists:films,film_id',
-             'store_id' => 'required|exists:stores,store_id',
+             'film_id' => 'required|exists:film,film_id',
+             'store_id' => 'required|exists:store,store_id',
          ]);
  
          $inventory = Inventory::findOrFail($id);
          $inventory->update($request->all());
  
-         return redirect()->route('inventory.index')->with('success', 'Inventario actualizado con éxito');
+         return redirect()->route('inventarios.show')->with('success', 'Inventario creado con éxito');
      }
  
-     // Eliminar un inventario
-    public function destroy($id)
+    // Eliminar un inventario
+    public function destroy($inventory_id)
     {
-        $inventory = Inventory::findOrFail($id);
+        // Primero eliminamos los registros relacionados en la tabla rental
+        Rental::where('inventory_id', $inventory_id)->delete();
+        
+        // Luego eliminamos el inventario
+        $inventory = Inventory::findOrFail($inventory_id);
         $inventory->delete();
 
-        return redirect()->route('inventarios.show')->with('success', 'El elemento ah sido eliminado correctamente!.');
+        // Redirigimos con un mensaje de éxito
+        return redirect()->route('inventory.index')->with('success', 'Inventario eliminado con éxito');
     }
 }

@@ -9,12 +9,31 @@ class Customer extends Model
 {
     use HasFactory;
 
+
     protected $table = 'customer';
-    protected $primaryKey = 'customer_id';
-    public $timestamps = false; // Si no hay created_at y updated_at
+    protected $primaryKey = 'customer_id'; 
+
 
     protected $fillable = [
-        'store_id', 'first_name', 'last_name', 'email', 
-        'address_id', 'active', 'create_date', 'last_update'
+        'store_id', 
+        'first_name', 
+        'last_name', 
+        'email', 
+        'address_id', 
+        'active',
+        'create_date',
     ];
+
+    public $timestamps = false; 
+    protected $dates = ['create_date', 'last_update']; 
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address_id');
+    }
 }
