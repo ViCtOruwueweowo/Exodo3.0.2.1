@@ -15,6 +15,9 @@ use App\Http\Controllers\LanguageController;
 use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\RentalController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
