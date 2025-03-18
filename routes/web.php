@@ -11,9 +11,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\FilmActorController;
 use App\Http\Controllers\FilmCategoryController;
-
-
-
+use App\Http\Controllers\LanguageController;
+use App\Models\Film;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +61,13 @@ Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name(
 Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
 Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 
+Route::get('/languages', [LanguageController::class, 'index'])->name('languages.index');
+Route::get('/languages/create', [LanguageController::class, 'create'])->name('languages.create');
+Route::post('/languages', [LanguageController::class, 'store'])->name('languages.store');
+Route::get('/languages/{language}/edit', [LanguageController::class, 'edit'])->name('languages.edit');
+Route::put('/languages/{language}', [LanguageController::class, 'update'])->name('languages.update');
+Route::delete('/languages/{language}', [LanguageController::class, 'destroy'])->name('languages.destroy');
+
 
 Route::get('/actors', [ActorController::class, 'index'])->name('actors.index');
 Route::get('/actors/create', [ActorController::class, 'create'])->name('actors.create');
@@ -77,7 +83,14 @@ Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->
 Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+
 Route::get('/films', [FilmController::class, 'index'])->name('films.index');
+Route::get('/films/create', [FilmController::class, 'create'])->name('films.create');
+Route::post('/films', [FilmController::class, 'store'])->name('films.store');
+Route::get('/films/{category}/edit', [FilmController::class, 'edit'])->name('films.edit');
+Route::put('/films/{category}', [FilmController::class, 'update'])->name('films.update');
+Route::delete('/films/{category}', [FilmController::class, 'destroy'])->name('films.destroy');
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('/film-actors', [FilmActorController::class, 'index'])->name('film_actors.index');
 Route::get('/film-categories', [FilmCategoryController::class, 'index'])->name('film_categories.index');

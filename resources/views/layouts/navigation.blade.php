@@ -87,6 +87,15 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('languages.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>
+                        Lenguaje
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{{ route('films.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-film"></i>
                     <p>Películas</p>
