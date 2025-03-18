@@ -41,23 +41,25 @@
 -->
             <li class="nav-item">
                 <a href="{{ route('countries.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-user"></i>
+                    <i class="nav-icon fas fa-globe"></i>
                     <p>Continentes</p>
                 </a>
             </li>
 
 
+
             <li class="nav-item">
                 <a href="{{ route('cities.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>Ciudad</p>
+                    <i class="nav-icon fas fa-building"></i>
+                    <p>Ciudades</p>
                 </a>
             </li>
 
+
             <li class="nav-item">
                 <a href="{{ route('address.index') }}" class="nav-link">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>Direcicones</p>
+                    <i class="nav-icon fas fa-map-marker-alt"></i>
+                    <p>Direcciones</p>
                 </a>
             </li>
 

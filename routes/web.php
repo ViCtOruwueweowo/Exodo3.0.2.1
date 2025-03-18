@@ -15,6 +15,12 @@ use App\Http\Controllers\LanguageController;
 use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
+
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\RentalController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,3 +128,11 @@ Route::post('/rentals', [RentalController::class, 'store'])->name('rentals.store
 Route::get('/rentals/{rental}/edit', [RentalController::class, 'edit'])->name('rentals.edit');
 Route::put('/rentals/{rental}', [RentalController::class, 'update'])->name('rentals.update');
 Route::delete('/rentals/{rental}', [RentalController::class, 'destroy'])->name('rentals.destroy');
+
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');       
+Route::get('/customers/create', [CustomerController::class, 'create'])->name('customers.create'); 
+Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');        
+Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');  
+Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit'); 
+Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update'); 
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy'); 
