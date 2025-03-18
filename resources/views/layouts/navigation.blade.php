@@ -54,6 +54,12 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a href="{{ route('address.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Direcicones</p>
+                </a>
+            </li>
 
             <li class="nav-item">
                 <a href="{{ route('actors.index') }}" class="nav-link">

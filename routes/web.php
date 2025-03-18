@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ActorController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
@@ -54,6 +55,12 @@ Route::get('/cities/{city}/edit', [CityController::class, 'edit'])->name('cities
 Route::put('/cities/{city}', [CityController::class, 'update'])->name('cities.update');
 Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('cities.destroy');
 
+Route::get('/address', [AddressController::class, 'index'])->name('address.index');
+Route::get('/address/create', [AddressController::class, 'create'])->name('address.create');
+Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('address.edit');
+Route::put('/address/{address}', [AddressController::class, 'update'])->name('address.update');
+Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('address.destroy');
 
 
 Route::get('/actors', [ActorController::class, 'index'])->name('actors.index');
