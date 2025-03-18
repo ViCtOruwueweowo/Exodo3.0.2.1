@@ -11,6 +11,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
             data-accordion="false">
+             <!-- 
             <li class="nav-item">
                 <a href="{{ route('home') }}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
@@ -37,6 +38,22 @@
                     </p>
                 </a>
             </li>
+-->
+            <li class="nav-item">
+                <a href="{{ route('countries.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Continentes</p>
+                </a>
+            </li>
+
+
+            <li class="nav-item">
+                <a href="{{ route('cities.index') }}" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Ciudad</p>
+                </a>
+            </li>
+
 
             <li class="nav-item">
                 <a href="{{ route('actors.index') }}" class="nav-link">
@@ -83,7 +100,7 @@
                     <p>Relación Películas - Categorías</p>
                 </a>
             </li>
-
+ <!-- 
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-circle nav-icon"></i>
@@ -101,6 +118,7 @@
                     </li>
                 </ul>
             </li>
+            -->
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
