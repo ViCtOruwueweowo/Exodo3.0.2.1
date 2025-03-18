@@ -101,3 +101,24 @@ Route::get('films/show', [FilmTextController::class, 'showAllFilms'])->name('fil
 Route::get('inventory', [InventoryController::class, 'showAllInventory'])->name('inventarios.show');
 Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventario.create');
 Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventarios.destroy');
+
+Route::get('/store', [StoreController::class, 'index'])->name('store.index');
+Route::get('/store/create', [StoreController::class, 'create'])->name('store.create');
+Route::post('/store', [StoreController::class, 'store'])->name('store.store');
+Route::get('/store/{store}/edit', [StoreController::class, 'edit'])->name('store.edit');
+Route::put('/store/{store}', [StoreController::class, 'update'])->name('store.update');
+Route::delete('/store/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
+
+Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
+Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+Route::get('/staff/{staff}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+Route::put('/staff/{staff}', [StaffController::class, 'update'])->name('staff.update');
+Route::delete('/staff/{staff}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+Route::get('/rentals', [RentalController::class, 'index'])->name('rentals.index');
+Route::get('/rentals/create', [RentalController::class, 'create'])->name('rentals.create');
+Route::post('/rentals', [RentalController::class, 'store'])->name('rentals.store');
+Route::get('/rentals/{rental}/edit', [RentalController::class, 'edit'])->name('rentals.edit');
+Route::put('/rentals/{rental}', [RentalController::class, 'update'])->name('rentals.update');
+Route::delete('/rentals/{rental}', [RentalController::class, 'destroy'])->name('rentals.destroy');
