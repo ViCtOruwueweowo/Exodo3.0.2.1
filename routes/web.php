@@ -13,7 +13,7 @@ use App\Http\Controllers\FilmActorController;
 use App\Http\Controllers\FilmCategoryController;
 use App\Http\Controllers\LanguageController;
 use App\Models\Film;
-
+use App\Http\Controllers\FilmTextController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -94,3 +94,6 @@ Route::delete('/films/{category}', [FilmController::class, 'destroy'])->name('fi
 Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
 Route::get('/film-actors', [FilmActorController::class, 'index'])->name('film_actors.index');
 Route::get('/film-categories', [FilmCategoryController::class, 'index'])->name('film_categories.index');
+
+Route::get('films/show', [FilmTextController::class, 'showAllFilms'])->name('films.show');
+Route::delete('films/{id}', [FilmTextController::class, 'destroy'])->name('films.destroy');

@@ -103,6 +103,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('films.show') }}" class="nav-link">
+                    <i class="nav-icon fas fa-film"></i>
+                    <p>Texto de la película</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{{ route('film_actors.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-user-tag"></i>
                     <p>Relación Películas - Actores</p>
