@@ -39,13 +39,13 @@
                                 <td>{{ $rental->staff_name }}</td>
                                 <td>
                                     <!-- Enlace para editar la película -->
-                                    <a href="{{ route('store.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{{ route('rentals.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
                                     <!-- Formulario para eliminar la película -->
-                                    <form action="{{ route('store.destroy', $rental->rental_id) }}"" method="POST" style="display:inline;">
+                                    <form action="{{ route('rentals.destroy', $rental->rental_id) }}"" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta renta?')">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

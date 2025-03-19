@@ -7,6 +7,7 @@ use App\Models\Staff;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class StoreController extends Controller
 {
@@ -49,43 +50,36 @@ class StoreController extends Controller
             'address_id' => 'required|integer',
         ]);
 
-        Store::create([
-            'manager_staff_id' => $validated['manager_staff_id'],
-            'address_id' => $validated['address_id'],
-            'last_update' => now(),
-        ]);
+        try {
+            Store::create([
+                'manager_staff_id' => $validated['manager_staff_id'],
+                'address_id' => $validated['address_id'],
+                'last_update' => now(),
+            ]);
 
-        return redirect()->route('store.index')->with('success', 'Store created successfully.');
-    }
+            return redirect()->route('store.index')->with('success', 'Store created successfully.');
+        } catch (QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()->route('store.index')->with('error', 'No se puede tener a 1 empleado en más de 1 tienda a la vez.');
+            }
 
-    public function edit($storeId)
-    {
-        $store = Store::findOrFail($storeId);
-        //return view('store.edit', compact('store'));
-    }
-
-    public function update(Request $request, $storeId)
-    {
-        $validated = $request->validate([
-            'manager_staff_id' => 'required|integer',
-            'address_id' => 'required|integer',
-        ]);
-
-        $store = Store::findOrFail($storeId);
-        $store->update([
-            'manager_staff_id' => $validated['manager_staff_id'],
-            'address_id' => $validated['address_id'],
-            'last_update' => now(),
-        ]);
-
-        return redirect()->route('store.index')->with('success', 'Store updated successfully.');
+            throw $e;
+        }
     }
 
     public function destroy($storeId)
     {
-        $store = Store::findOrFail($storeId);
-        $store->delete();
-
-        return redirect()->route('store.index')->with('success', 'Store deleted successfully.');
+        try {
+            $store = Store::findOrFail($storeId);
+            $store->delete();
+    
+            return redirect()->route('store.index')->with('success', 'Store deleted successfully.');
+        } catch (QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()->route('store.index')->with('error', 'No se puede eliminar, otro registro interfiere con el proceso.');
+            }
+    
+            throw $e;
+        }
     }
 }

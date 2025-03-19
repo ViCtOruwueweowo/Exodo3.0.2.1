@@ -117,8 +117,6 @@ Route::get('payments', [PaymentController::class, 'showALL'])->name('Payments.sh
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/create', [StoreController::class, 'create'])->name('store.create');
 Route::post('/store', [StoreController::class, 'store'])->name('store.store');
-Route::get('/store/{store}/edit', [StoreController::class, 'edit'])->name('store.edit');
-Route::put('/store/{store}', [StoreController::class, 'update'])->name('store.update');
 Route::delete('/store/{store}', [StoreController::class, 'destroy'])->name('store.destroy');
 
 Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
