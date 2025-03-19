@@ -62,7 +62,11 @@ class RentalController extends Controller
     public function edit($rentalId)
     {
         $rental = Rental::findOrFail($rentalId);
-        return view('rentals.edit', compact('rental'));
+        $inventories = Inventory::select('inventory_id')->get();
+        $customers = Customer::select('customer_id', 'first_name', 'last_name')->get();
+        $staffs = Staff::select('staff_id', DB::raw("CONCAT(first_name, ' ', last_name) as full_name"))->get();
+
+        return view('rentals.edit', compact('rental', 'inventories', 'customers', 'staffs'));
     }
 
     public function update(Request $request, $rentalId)
