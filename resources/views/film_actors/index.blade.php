@@ -11,17 +11,17 @@
                 <table class="table table-striped" id="film-actors-table">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Actor ID</th>
-                            <th>Film ID</th>
-                            <th>Última Actualización</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Pelicula</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($filmActors as $filmActor)
                             <tr>
-                                <td>{{ $filmActor->actor_id }}</td>
-                                <td>{{ $filmActor->film_id }}</td>
-                                <td>{{ $filmActor->last_update }}</td>
+                                <td>{{ $filmActor->Nombre }}</td>
+                                <td>{{ $filmActor->Apellido }}</td>
+                                <td>{{ $filmActor->Pelicula }}</td>
                             </tr>
                         @endforeach
                     </tbody>
