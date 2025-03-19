@@ -15,9 +15,12 @@ use App\Http\Controllers\LanguageController;
 use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\PaymentController;
+
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RentalController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -107,6 +110,8 @@ Route::post('/inventory/store', [InventoryController::class, 'store'])->name('in
 Route::get('/inventory/{inventory_id}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
 Route::put('/inventory/{inventory_id}', [InventoryController::class, 'update'])->name('inventory.update');
 Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventarios.destroy');
+
+Route::get('payments', [PaymentController::class, 'showALL'])->name('Payments.show');
 
 
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
