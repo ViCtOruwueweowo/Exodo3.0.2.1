@@ -21,7 +21,7 @@
 <body>
 
 <div class="container mt-5">
-    <a href="{{ route('films.create') }}" class="btn btn-outline-primary">Agregar</a>
+    <a href="{{ route('films.create') }}" class="btn btn-primary">Agregar</a>
     <br><br>
     <!-- Contenedor con desplazamiento vertical -->
     <div style="max-height: 400px; overflow-y: auto;">
@@ -43,13 +43,13 @@
                         <td>{{ $film->description }}</td>
                         <td>
                             <!-- Botón de editar (aún sin acción) -->
-                            <a type="button" href="{{ route('films.edit', $film->film_id) }}" class="btn btn-outline-warning">Editar</a><br><br>
+                            <a type="button" href="{{ route('films.edit', $film->film_id) }}" class="btn btn-warning">Editar</a><br><br>
 
                             <!-- Formulario para eliminar la película -->
                             <form action="{{ route('films.destroy', $film->film_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
                                     </form>
                         </td>
                     </tr>
