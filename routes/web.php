@@ -118,8 +118,12 @@ Route::get('/inventory/{inventory_id}/edit', [InventoryController::class, 'edit'
 Route::put('/inventory/{inventory_id}', [InventoryController::class, 'update'])->name('inventory.update');
 Route::delete('/inventory/{id}', [InventoryController::class, 'destroy'])->name('inventarios.destroy');
 
-Route::get('payments', [PaymentController::class, 'showALL'])->name('Payments.show');
-
+Route::get('payments', [PaymentController::class, 'index'])->name('Payments.show');
+Route::get('/payment/create', [PaymentController::class, 'create'])->name('Payment.create');
+Route::post('/payment/store', [PaymentController::class, 'store'])->name('Payment.store');
+Route::get('/payment/{payment}/edit', [PaymentController::class, 'edit'])->name('Payment.edit');
+Route::put('/payment/{payment}', [PaymentController::class, 'update'])->name('Payment.update');
+Route::delete('/payment/{id}', [PaymentController::class, 'destroy'])->name('Payment.destroy');
 
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/create', [StoreController::class, 'create'])->name('store.create');

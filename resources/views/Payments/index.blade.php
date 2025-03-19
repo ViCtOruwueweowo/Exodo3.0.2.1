@@ -1,0 +1,62 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container-fluid">
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="container mt-1">
+        <h1>Lista de Pagos</h1>
+        <a href="{{ route('Payment.create') }}" class="btn btn-primary mb-3">Agregar Pago</a>
+
+        <!-- Mostrar los pagos en una tabla -->
+        <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID de Pago</th>
+            <th>Cliente</th>
+            <th>Empleado</th>
+            <th>Alquiler</th>
+            <th>Monto</th>
+            <th>Fecha de Pago</th>
+            <th>Última Actualización</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($payments as $payment)
+            <tr>
+                <td>{{ $payment->payment_id }}</td>
+                <td>{{ $payment->customer->first_name }} {{ $payment->customer->last_name  }}</td>
+                <td>{{ $payment->staff->first_name }} {{ $payment->staff->last_name }}</td>
+                <td>{{ $payment->rental ? $payment->rental->rental_date : 'N/A' }}</td>
+                <td>{{ $payment->amount }}</td>
+                <td>{{ $payment->payment_date }}</td>
+                <td>{{ $payment->last_update }}</td>
+                <td>
+                    <!-- Botones de acción (editar, eliminar) -->
+                    <a href="{{ route('Payment.edit', $payment->payment_id) }}" class="btn btn-warning btn-sm">Editar</a><br><br>
+                    <form action="{{ route('Payment.destroy', $payment->payment_id) }}" method="POST" style="display: inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+<!-- Paginación -->
+<div class="d-flex justify-content-center">
+    {{ $payments->links() }}
+</div>
+
+
+    </div>
+
+@endsection

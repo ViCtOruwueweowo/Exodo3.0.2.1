@@ -15,6 +15,9 @@ class Payment extends Model
     // Define la clave primaria
     protected $primaryKey = 'payment_id';
 
+    // Deshabilitar el uso de timestamps
+    public $timestamps = false;
+
     // Especifica las columnas que son asignables masivamente
     protected $fillable = [
         'customer_id',

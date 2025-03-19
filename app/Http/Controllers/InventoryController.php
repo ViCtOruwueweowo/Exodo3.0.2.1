@@ -24,8 +24,7 @@ class InventoryController extends Controller
          $inventories = Inventory::all();
 
          // Obtener todos los inventarios con sus respectivas películas asociadas
-         $inventories = Inventory::with('film')->get();
-
+         $inventories = Inventory::with('film')->paginate(10);
          $stores = Store::all(); // Obtener todas las tiendas
          // Retornar la vista y pasar los datos
          return view('inventory.index', compact('inventories'));

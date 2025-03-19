@@ -24,38 +24,44 @@
     <a href="{{ route('films.create') }}" class="btn btn-primary">Agregar</a>
     <br><br>
     <!-- Contenedor con desplazamiento vertical -->
-    <div style="max-height: 400px; overflow-y: auto;">
+    <div>
         <!-- Tabla para mostrar los films -->
         <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($films as $film)
-                    <tr id="film-{{ $film->film_id }}">
-                        <td>{{ $film->film_id}}</td>
-                        <td>{{ $film->title }}</td>
-                        <td>{{ $film->description }}</td>
-                        <td>
-                            <!-- Botón de editar (aún sin acción) -->
-                            <a type="button" href="{{ route('films.edit', $film->film_id) }}" class="btn btn-warning">Editar</a><br><br>
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($films as $film)
+            <tr id="film-{{ $film->film_id }}">
+                <td>{{ $film->film_id }}</td>
+                <td>{{ $film->title }}</td>
+                <td>{{ $film->description }}</td>
+                <td>
+                    <!-- Botón de editar (aún sin acción) -->
+                    <a type="button" href="{{ route('films.edit', $film->film_id) }}" class="btn btn-warning">Editar</a><br><br>
 
-                            <!-- Formulario para eliminar la película -->
-                            <form action="{{ route('films.destroy', $film->film_id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
-                                    </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    <!-- Formulario para eliminar la película -->
+                    <form action="{{ route('films.destroy', $film->film_id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
+<!-- Paginación -->
+<div class="d-flex justify-content-center">
+    {{ $films->links() }}
+</div>
+
     </div>
 </div>
 

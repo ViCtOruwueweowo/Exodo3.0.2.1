@@ -17,9 +17,8 @@ class FilmTextController extends Controller
     public function showAllFilms()
     {
         // Obtener todos los registros de la tabla 'film_text'
-        $films = FilmText::all();
+        $films = FilmText::paginate(10); // Esto paginará los resultados mostrando 10 por página
 
-        // Retornar la vista y pasar los datos de los films
         return view('films_text.index', compact('films'));
     }
 
