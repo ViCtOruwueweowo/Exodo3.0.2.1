@@ -117,6 +117,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ route('inventarios.show') }}" class="nav-link">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>Pagos</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="{{ route('film_actors.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-user-tag"></i>
                     <p>Relación Películas - Actores</p>
