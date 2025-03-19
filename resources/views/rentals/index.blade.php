@@ -10,7 +10,7 @@
         </div>
     @endif
 
-    <a href="{{ route('staff.create') }}" class="btn btn-primary mb-3">Crear Nuevo Rental</a>
+    <a href="{{ route('rentals.create') }}" class="btn btn-primary mb-3">Crear Nuevo Rental</a>
 
     <div class="card">
         <div class="card-body">
@@ -21,7 +21,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Fecha</th>
-                            <th>Inventario</th>
+                            <th># Inventario</th>
                             <th>Cliente</th>
                             <th>Fecha regreso</th>
                             <th>Encargado del staff</th>
@@ -34,18 +34,18 @@
                                 <td>{{ $rental->rental_id }}</td>
                                 <td>{{ $rental->rental_date }}</td>
                                 <td>{{ $rental->inventory_id }}</td>
-                                <td>{{ $rental->customer_id }}</td>
+                                <td>{{ $rental->customer_name }}</td>
                                 <td>{{ $rental->return_date }}</td>
-                                <td>{{ $rental->staff_id }}</td>
+                                <td>{{ $rental->staff_name }}</td>
                                 <td>
                                     <!-- Enlace para editar la película -->
-                                    <a href="{{ route('store.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{{ route('rentals.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
                                     <!-- Formulario para eliminar la película -->
-                                    <form action="{{ route('store.destroy', $rental->rental_id) }}"" method="POST" style="display:inline;">
+                                    <form action="{{ route('rentals.destroy', $rental->rental_id) }}"" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta renta?')">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

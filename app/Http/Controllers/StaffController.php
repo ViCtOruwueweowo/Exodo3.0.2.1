@@ -3,19 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Models\Address;
 use Illuminate\Http\Request;
+use App\Models\Store;
+use Illuminate\Database\QueryException;
 
 class StaffController extends Controller
 {
     public function index()
     {
-        $staffs = Staff::all();
+        $staffs = Staff::join('address', 'staff.address_id', '=', 'address.address_id')
+            ->select(
+                'staff.staff_id',
+                'staff.first_name',
+                'staff.last_name',
+                'address.address as address_name',
+                'staff.email',
+                'staff.store_id',
+                'staff.active',
+                'staff.username',
+                'staff.password',
+                'staff.picture',
+            )
+            ->get();
         return view('staffs.index', compact('staffs'));
     }
 
     public function create()
     {
-        return view('staff.create');
+        $addresses = Address::select(
+            'address_id',
+            'address as address_name'
+        )->get();
+
+        $stores = Store::select(
+            'store_id',
+        )->get();
+        
+        return view('staffs.create', compact('addresses', 'stores'));
     }
 
     public function store(Request $request)
@@ -40,7 +65,7 @@ class StaffController extends Controller
         $staff->store_id = $validated['store_id'];
         $staff->active = $validated['active'];
         $staff->username = $validated['username'];
-        $staff->password = bcrypt($validated['password']);
+        $staff->password = $validated['password'];
         $staff->last_update = now();
 
         if ($request->hasFile('picture')) {
@@ -55,7 +80,10 @@ class StaffController extends Controller
     public function edit($staffId)
     {
         $staff = Staff::findOrFail($staffId);
-        return view('staff.edit', compact('staff'));
+        $addresses = Address::select('address_id', 'address as address_name')->get();
+        $stores = Store::select('store_id')->get();
+
+        return view('staffs.edit', compact('staff', 'addresses', 'stores'));
     }
 
     public function update(Request $request, $staffId)
@@ -80,7 +108,7 @@ class StaffController extends Controller
         $staff->store_id = $validated['store_id'];
         $staff->active = $validated['active'];
         $staff->username = $validated['username'];
-        $staff->password = bcrypt($validated['password']);
+        $staff->password = $validated['password'];
         $staff->last_update = now();
 
         if ($request->hasFile('picture')) {
@@ -94,9 +122,17 @@ class StaffController extends Controller
 
     public function destroy($staffId)
     {
-        $staff = Staff::findOrFail($staffId);
-        $staff->delete();
-
-        return redirect()->route('staff.index')->with('success', 'Staff deleted successfully.');
+        try {
+            $staff = Staff::findOrFail($staffId);
+            $staff->delete();
+    
+            return redirect()->route('staff.index')->with('success', 'Staff deleted successfully.');
+        } catch (QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return redirect()->route('staff.index')->with('error', 'No se puede eliminar, otro registro interfiere con el proceso.');
+            }
+    
+            throw $e;
+        }
     }
 }

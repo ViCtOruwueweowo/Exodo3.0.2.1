@@ -10,6 +10,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <a href="{{ route('store.create') }}" class="btn btn-primary mb-3">Crear Nueva Tienda</a>
 
     <div class="card">
@@ -29,17 +35,14 @@
                         @foreach ($stores as $store)
                             <tr>
                                 <td>{{ $store->store_id }}</td>
-                                <td>{{ $store->manager_staff_id }}</td>
-                                <td>{{ $store->address_id }}</td>
+                                <td>{{ $store->manager_staff }}</td>
+                                <td>{{ $store->address_name }}</td>
                                 <td>
-                                    <!-- Enlace para editar la película -->
-                                    <a href="{{ route('store.edit', $store->store_id) }}" class="btn btn-warning btn-sm">Editar</a>
-
                                     <!-- Formulario para eliminar la película -->
                                     <form action="{{ route('store.destroy', $store->store_id) }}"" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tienda?')">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>

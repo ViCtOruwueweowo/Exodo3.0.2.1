@@ -10,6 +10,12 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <a href="{{ route('staff.create') }}" class="btn btn-primary mb-3">Crear Nuevo Staff</a>
 
     <div class="card">
@@ -38,7 +44,7 @@
                                 <td>{{ $staff->staff_id }}</td>
                                 <td>{{ $staff->first_name }}</td>
                                 <td>{{ $staff->last_name }}</td>
-                                <td>{{ $staff->address_id }}</td>
+                                <td>{{ $staff->address_name }}</td>
                                 <td>{{ $staff->picture }}</td>
                                 <td>{{ $staff->email }}</td>
                                 <td>{{ $staff->store_id }}</td>
@@ -47,13 +53,13 @@
                                 <td>{{ $staff->password }}</td>
                                 <td>
                                     <!-- Enlace para editar la película -->
-                                    <a href="{{ route('store.edit', $staff->staff_id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{{ route('staff.edit', $staff->staff_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
                                     <!-- Formulario para eliminar la película -->
-                                    <form action="{{ route('store.destroy', $staff->staff_id) }}"" method="POST" style="display:inline;">
+                                    <form action="{{ route('staff.destroy', $staff->staff_id) }}"" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">Eliminar</button>
                                     </form>
                                 </td>
                             </tr>
