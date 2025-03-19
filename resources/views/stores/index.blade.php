@@ -29,8 +29,8 @@
                         @foreach ($stores as $store)
                             <tr>
                                 <td>{{ $store->store_id }}</td>
-                                <td>{{ $store->manager_staff_id }}</td>
-                                <td>{{ $store->address_id }}</td>
+                                <td>{{ $store->manager_staff }}</td>
+                                <td>{{ $store->address_name }}</td>
                                 <td>
                                     <!-- Enlace para editar la película -->
                                     <a href="{{ route('store.edit', $store->store_id) }}" class="btn btn-warning btn-sm">Editar</a>

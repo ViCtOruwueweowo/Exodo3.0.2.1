@@ -13,7 +13,7 @@ class Staff extends Model
     protected $primaryKey = 'staff_id';
     protected $fillable = ['first_name', 'last_name', 'address_id', 'picture', 'email', 'store_id', 'active', 'username', 'password'];
 
-    public $timestamps = true;
+    public $timestamps = false;
     const UPDATED_AT = 'last_update';
 
     public function address()

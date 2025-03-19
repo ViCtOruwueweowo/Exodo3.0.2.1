@@ -38,7 +38,7 @@
                                 <td>{{ $staff->staff_id }}</td>
                                 <td>{{ $staff->first_name }}</td>
                                 <td>{{ $staff->last_name }}</td>
-                                <td>{{ $staff->address_id }}</td>
+                                <td>{{ $staff->address_name }}</td>
                                 <td>{{ $staff->picture }}</td>
                                 <td>{{ $staff->email }}</td>
                                 <td>{{ $staff->store_id }}</td>

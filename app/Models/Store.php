@@ -13,7 +13,7 @@ class Store extends Model
     protected $primaryKey = 'store_id';
     protected $fillable = ['manager_staff_id', 'address_id'];
 
-    public $timestamps = true;
+    public $timestamps = false;
     const UPDATED_AT = 'last_update';
 
     public function managerStaff()

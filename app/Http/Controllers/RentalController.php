@@ -4,18 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Rental;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Inventory;
+use App\Models\Customer;
+use App\Models\Staff;
 
 class RentalController extends Controller
 {
     public function index()
     {
-        $rentals = Rental::all();
+        $rentals = Rental::join('inventory', 'rental.inventory_id', '=', 'inventory.inventory_id')
+            ->join('customer', 'rental.customer_id', '=', 'customer.customer_id')
+            ->join('staff', 'rental.staff_id', '=', 'staff.staff_id')
+            ->select(
+                'rental.rental_id',
+                'rental.rental_date',
+                'rental.inventory_id',
+                DB::raw("CONCAT(customer.first_name, ' ', customer.last_name) as customer_name"),
+                'rental.return_date',
+                DB::raw("CONCAT(staff.first_name, ' ', staff.last_name) as staff_name"),
+            )
+            ->get();
         return view('rentals.index', compact('rentals'));
     }
 
     public function create()
     {
-        return view('rentals.create');
+        $inventories = Inventory::select('inventory_id')->get();
+        $customers = Customer::select('customer_id', 'first_name', 'last_name')->get();
+        $staffs = Staff::select('staff_id', DB::raw("CONCAT(first_name, ' ', last_name) as full_name"))->get();
+
+        return view('rentals.create', compact('inventories', 'customers', 'staffs'));
     }
 
     public function store(Request $request)
@@ -37,7 +56,7 @@ class RentalController extends Controller
             'last_update' => now(), 
         ]);
 
-        return redirect()->route('rentals.index')->with('success', 'Rental creado exitosamente.');
+        return redirect()->route('rentals.index')->with('success', 'Rental created successfully.');
     }
 
     public function edit($rentalId)

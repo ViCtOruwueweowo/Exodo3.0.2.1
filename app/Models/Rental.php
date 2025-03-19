@@ -13,7 +13,7 @@ class Rental extends Model
     protected $primaryKey = 'rental_id';
     protected $fillable = ['rental_date', 'inventory_id', 'customer_id', 'return_date', 'staff_id'];
 
-    public $timestamps = true;
+    public $timestamps = false;
     const UPDATED_AT = 'last_update';
 
     public function inventory()

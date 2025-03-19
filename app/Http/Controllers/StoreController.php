@@ -3,19 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Staff;
+use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
     public function index()
     {
-        $stores = Store::all();
+        $stores = Store::join('staff', 'store.manager_staff_id', '=', 'staff.staff_id')
+            ->join('address', 'store.address_id', '=', 'address.address_id')
+            ->select(
+                'store.store_id',
+                DB::raw("CONCAT(staff.first_name, ' ', staff.last_name) as manager_staff"),
+                'address.address as address_name',
+            )
+            ->get();
         return view('stores.index', compact('stores'));
     }
 
     public function create()
     {
-        return view('store.create');
+        $staff = Staff::select(
+            'staff_id',
+            DB::raw("CONCAT(first_name, ' ', last_name) as full_name")
+        )->get();
+
+        $addresses = Address::select(
+            'address_id',
+            'address as address_name'
+        )->get();
+
+        $stores = Store::select(
+            'store_id',
+        )->get();
+
+        return view('stores.create', compact('staff', 'addresses', 'stores'));
     }
 
     public function store(Request $request)
