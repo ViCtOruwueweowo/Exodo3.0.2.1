@@ -13,9 +13,13 @@
         <h1>Lista de Pagos</h1>
         <a href="{{ route('Payment.create') }}" class="btn btn-primary mb-3">Agregar Pago</a>
 
+        <div class="card">
+        <div class="card-body">
+            <!-- Contenedor con desplazamiento vertical -->
+        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
         <!-- Mostrar los pagos en una tabla -->
         <table class="table table-bordered">
-    <thead>
+    <thead class="thead-dark">
         <tr>
             <th>ID de Pago</th>
             <th>Cliente</th>
@@ -54,9 +58,10 @@
 <!-- Paginación -->
 <div class="d-flex justify-content-center">
     {{ $payments->links() }}
-</div>
-
-
     </div>
+            </div>
+        </div>
+    </div>  
+</div>
 
 @endsection

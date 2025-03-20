@@ -10,11 +10,9 @@ class CityController extends Controller
 {
     public function index()
     {
-        $cities = City::join('country', 'city.country_id', 'country.country_id')
-                     ->select('city.city_id', 'city.city', 'country.country')
-                     ->get();
-    
-        return view('cities.index', compact('cities'));
+        $cities = City::with('country')->paginate(10);
+
+         return view('cities.index', compact('cities'));
     }
 
     public function create()

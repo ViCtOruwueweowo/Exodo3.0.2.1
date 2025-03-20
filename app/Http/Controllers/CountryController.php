@@ -9,7 +9,7 @@ class CountryController extends Controller
 {
     public function index()
     {
-        $countries = Country::all();
+        $countries = Country::paginate(10);
         return view('countries.index', compact('countries'));
     }
 

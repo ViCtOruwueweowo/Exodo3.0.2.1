@@ -18,8 +18,11 @@
             {{ session('success') }}
         </div>
     @endif
+    <div class="card">
+        <div class="card-body">
+            <!-- Contenedor con desplazamiento vertical -->
     <!-- Contenedor con desplazamiento vertical -->
-    <div >
+    <div style="max-height: 600px; overflow-y: auto;">
     <table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
@@ -52,11 +55,11 @@
 <!-- Paginación -->
 <div class="d-flex justify-content-center">
     {{ $inventories->links() }}
-</div>
-
     </div>
+            </div>
+        </div>
+    </div>  
 </div>
-
 
 
 @endsection   

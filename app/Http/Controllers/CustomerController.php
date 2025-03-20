@@ -12,7 +12,7 @@ class CustomerController extends Controller
     // Mostrar todos los clientes
     public function index()
     {
-        $customers = Customer::with(['store', 'address'])->get(); 
+        $customers = Customer::with(['store', 'address'])->paginate(10);; 
         return view('customers.index', compact('customers'));
     }
 

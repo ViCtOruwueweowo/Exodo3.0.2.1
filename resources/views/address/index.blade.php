@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <!-- Contenedor con desplazamiento vertical -->
-            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
                 <table class="table table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>
@@ -53,6 +53,10 @@
                     </tbody>
                 </table>
             </div>
+            <!-- Paginación -->
+<div class="d-flex justify-content-center">
+    {{ $addresses->links() }}
+</div>
         </div>
     </div>
 </div>

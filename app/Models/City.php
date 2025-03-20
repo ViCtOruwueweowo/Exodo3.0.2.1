@@ -13,5 +13,11 @@ class City extends Model
     public $timestamps = false; 
 
     protected $fillable = ['city','country_id', 'last_update'];
+    
 
+    // Relación belongsTo con Country
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id'); // Elimina el espacio extra después de 'country_id'
+    }
 }

@@ -9,7 +9,7 @@ class LanguageController extends Controller
 {
     public function index()
     {
-        $languages = Language::all(); // Obtiene todos los idiomas
+        $languages = Language::paginate(10);  // Obtiene todos los idiomas
         return view('languages.index', compact('languages')); // Devuelve la vista con los idiomas
     }
 

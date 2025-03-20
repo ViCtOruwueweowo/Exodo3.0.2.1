@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <!-- Contenedor con desplazamiento vertical -->
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 700px; overflow-y: auto;">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
@@ -26,15 +26,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($countries as $countries)
+                        @foreach ($countries as $country)
                             <tr>
-                                <td>{{ $countries->country_id }}</td>
-                                <td>{{ $countries->country }}</td>
-                                <td>{{ $countries->last_update }}</td>
+                                <td>{{ $country->country_id }}</td>
+                                <td>{{ $country->country }}</td>
+                                <td>{{ $country->last_update }}</td>
                                 <td>
-                                    <a href="{{ route('countries.edit', $countries->country_id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{{ route('countries.edit', $country->country_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
-                                    <form action="{{ route('countries.destroy', $countries->country_id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('countries.destroy', $country->country_id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este continente?')">Eliminar</button>
@@ -46,6 +46,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-center">
+                    {{ $countries->links() }}
+                    </div>
         </div>
     </div>
 </div>

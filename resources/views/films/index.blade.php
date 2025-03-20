@@ -15,8 +15,8 @@
     <div class="card">
         <div class="card-body">
             <!-- Contenedor con desplazamiento vertical -->
-            <div style="max-height: 400px; overflow-y: auto;">
-                <table class="table table-striped">
+            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                <table class="table table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>
                             <th>ID</th>
@@ -62,8 +62,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                    <div class="d-flex justify-content-center">
+                    {{ $films->links() }}
+                    </div>
             </div>
         </div>
-    </div>
+    </div>  
 </div>
 @endsection

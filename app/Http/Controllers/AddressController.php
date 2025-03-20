@@ -20,8 +20,7 @@ class AddressController extends Controller
                                  'city.city as city_name', // Alias para evitar conflictos de nombres
                                  'address.postal_code',
                                  'address.phone'
-                             )
-                             ->get();
+                             )->paginate(10);
 
         return view('address.index', compact('addresses'));
     }

@@ -24,9 +24,13 @@
     <a href="{{ route('films.create') }}" class="btn btn-primary">Agregar</a>
     <br><br>
     <!-- Contenedor con desplazamiento vertical -->
-    <div>
-        <!-- Tabla para mostrar los films -->
-        <table class="table table-bordered">
+
+    <div class="card">
+        <div class="card-body">
+             <!-- Contenedor con desplazamiento vertical -->
+             <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                
+<table class="table table-bordered">
     <thead class="thead-dark">
         <tr>
             <th>ID</th>
@@ -62,7 +66,10 @@
     {{ $films->links() }}
 </div>
 
+             </div>
+        </div>
     </div>
+
 </div>
 
 <!-- Script de Bootstrap -->

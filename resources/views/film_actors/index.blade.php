@@ -7,10 +7,11 @@
     <div class="card">
         <div class="card-body">
             <!-- Contenedor con desplazamiento vertical -->
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 700px; overflow-y: auto;">
                 <table class="table table-striped" id="film-actors-table">
                     <thead class="thead-dark">
                         <tr>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Pelicula</th>
@@ -19,6 +20,7 @@
                     <tbody>
                         @foreach ($filmActors as $filmActor)
                             <tr>
+                                <td>{{ $filmActor->actor_id }}</td>
                                 <td>{{ $filmActor->Nombre }}</td>
                                 <td>{{ $filmActor->Apellido }}</td>
                                 <td>{{ $filmActor->Pelicula }}</td>
@@ -27,6 +29,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-center">
+                    {{ $filmActors->links() }}
+                    </div>
         </div>
     </div>
 </div>

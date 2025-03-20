@@ -24,7 +24,7 @@ class RentalController extends Controller
                 'rental.return_date',
                 DB::raw("CONCAT(staff.first_name, ' ', staff.last_name) as staff_name"),
             )
-            ->get();
+            ->paginate(10);
         return view('rentals.index', compact('rentals'));
     }
 

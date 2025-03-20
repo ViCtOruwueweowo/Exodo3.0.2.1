@@ -15,4 +15,16 @@ class FilmCategory extends Model
     protected $fillable = [
         'film_id', 'category_id', 'last_update'
     ];
+
+    // Relación con Film (un FilmCategory pertenece a un Film)
+    public function film()
+    {
+        return $this->belongsTo(Film::class, 'film_id');
+    }
+
+    // Relación con Category (un FilmCategory pertenece a una Category)
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

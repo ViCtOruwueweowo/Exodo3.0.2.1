@@ -24,8 +24,7 @@ class FilmController extends Controller
                 'film.replacement_cost',
                 'film.rating',
                 'film.special_features'
-            )
-            ->get();
+            )->paginate(10);
 
         return view('films.index', compact('films'));
     }

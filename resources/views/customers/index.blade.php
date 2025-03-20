@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-body">
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 700px; overflow-y: auto;">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
@@ -53,6 +53,10 @@
                 </table>
             </div>
         </div>
+        <!-- Paginación -->
+<div class="d-flex justify-content-center">
+    {{ $customers->links() }}
+</div>
     </div>
 </div>
 @endsection

@@ -15,7 +15,7 @@
     <div class="card">
         <div class="card-body">
             <!-- Contenedor con desplazamiento vertical -->
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 700px; overflow-y: auto;">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                         <tr>
@@ -53,6 +53,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="d-flex justify-content-center">
+                    {{ $rentals->links() }}
+                    </div>
         </div>
     </div>
 </div>
