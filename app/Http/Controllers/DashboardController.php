@@ -30,8 +30,21 @@ class DashboardController extends Controller
         $totalCustomers = Customer::count();
         $totalRentals = Rental::count();
         $totalPayments = Payment::sum('amount');
+        $totalActors = Actor::count();
+        $totalCategories = Category::count();
+        $totalStores = Store::count();
+        $totalStaff = Staff::count();
 
         // Pass data to the view
-        return view('dashboard.index', compact('totalFilms', 'totalCustomers', 'totalRentals', 'totalPayments'));
+        return view('home', compact(
+            'totalFilms', 
+            'totalCustomers', 
+            'totalRentals', 
+            'totalPayments',
+            'totalActors',
+            'totalCategories',
+            'totalStores',
+            'totalStaff'
+        ));
     }
 }

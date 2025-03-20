@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FilmText;
+use App\Models\Film;
+
 use Illuminate\Http\Request;
 
 class FilmTextController extends Controller
