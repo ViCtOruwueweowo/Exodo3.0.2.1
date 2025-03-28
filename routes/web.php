@@ -33,9 +33,7 @@ use App\Http\Controllers\RentalController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
@@ -148,7 +146,13 @@ Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->
 
 Route::get('staff/register', [StaffController::class, 'showRegisterForm'])->name('staff.register');
 Route::post('staff/register', [StaffController::class, 'registerForm'])->name('staff.registerForm');    
-Route::get('staff/login', [StaffController::class, 'showLoginForm'])->name('staff.login');
+Route::get('/', [StaffController::class, 'showLoginForm'])->name('staff.login');
+Route::post('/', [StaffController::class, 'login'])->name('staff1.login');
+
+Route::post('/staff/{staffId}/verify-2fa', [StaffController::class, 'verify2fa'])->name('staff.verify2fa');
+
+
+
 
 Route::get('staff/recoverEmail', [StaffController::class, 'showRecoveryForm'])->name('staff.showRecoveryForm');
 Route::post('staff/recoverPassword', [StaffController::class, 'sendVerificationCode'])->name('staff.sendVerificationCode');
@@ -161,5 +165,4 @@ Route::get('staff/resetPasswordForm', function () {
 })->name('staff.resetPasswordForm');
 Route::post('staff/resetPassword', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
 
-Route::post('staff/login', [StaffController::class, 'login'])->name('staff.login');
 

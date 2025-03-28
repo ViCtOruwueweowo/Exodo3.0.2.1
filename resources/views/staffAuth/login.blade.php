@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="login">
-    <form action="{{ route('staff.login') }}" method="POST" class="login__form">
+    <form action="{{ route('staff1.login') }}" method="POST" class="login__form">
       @csrf
       <h1 class="login__title">Login</h1>
 

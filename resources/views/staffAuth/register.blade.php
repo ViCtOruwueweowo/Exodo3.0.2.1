@@ -68,17 +68,6 @@
             </div>
 
             <div class="login__box">
-            <label for="active">Activo:</label>
-            <select name="active" id="active" class="form-control" required>
-                <option value="1" {{ old('active') == '1' ? 'selected' : '' }}>Sí</option>
-                <option value="0" {{ old('active') == '0' ? 'selected' : '' }}>No</option>
-            </select>
-            @error('active')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-            </div>
-
-            <div class="login__box">
             <label for="username">Nombre de usuario:</label>
             <input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" required>
             @error('username')
