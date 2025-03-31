@@ -335,17 +335,17 @@ class StaffController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-    
+        
         $username = $request->input('username');
         $password = $request->input('password');
-    
+        
         // Buscar al usuario en la base de datos por nombre de usuario
         $staff = Staff::where('username', $username)->first();
-    
+        
         if ($staff && Hash::check($password, $staff->password)) {
             // Si el usuario existe y la contraseña es correcta, generar el token JWT
             $token = JWTAuth::fromUser($staff);
-
+    
             // Retornar el token al cliente
             return response()->json([
                 'message' => 'Inicio de sesión exitoso.',
@@ -355,4 +355,5 @@ class StaffController extends Controller
             return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
         }
     }
+    
 }
