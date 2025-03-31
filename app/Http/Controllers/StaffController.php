@@ -376,10 +376,21 @@ class StaffController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('staff')->logout();
-        return redirect()->route('staff.login')->with('success', 'Sesión cerrada correctamente.');
+        try {
+            // Invalidar el token
+            Auth::guard('staff')->logout();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Sesión cerrada correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se pudo cerrar sesión'
+            ], 500);
+        }
     }
-    
 
     
 }
