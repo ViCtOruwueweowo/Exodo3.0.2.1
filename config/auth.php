@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'staffs',
     ],
 
     /*
@@ -35,12 +35,13 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+'guards' => [
+    // Guard para 'staff'
+    'staff' => [
+        'driver' => 'session',
+        'provider' => 'staffs',
     ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -59,11 +60,12 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+'providers' => [
+    // Proveedor para 'staff'
+    'staffs' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Staff::class,  // Utiliza el modelo Staff
+    ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -87,8 +89,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'staff' => [
+            'provider' => 'staffs',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

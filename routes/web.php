@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ActorController;
 use App\Http\Controllers\AddressController;
@@ -33,9 +34,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
@@ -146,4 +145,27 @@ Route::post('/customers', [CustomerController::class, 'store'])->name('customers
 Route::get('/customers/{customer}', [CustomerController::class, 'show'])->name('customers.show');  
 Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit'); 
 Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update'); 
-Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy'); 
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+Route::get('staff/register', [StaffController::class, 'showRegisterForm'])->name('staff.register');
+Route::post('staff/register', [StaffController::class, 'registerForm'])->name('staff.registerForm');    
+Route::get('/', [StaffController::class, 'showLoginForm'])->name('staff.login');
+Route::post('/', [StaffController::class, 'login'])->name('staff1.login');
+
+Route::post('/staff/{staffId}/verify-2fa', [StaffController::class, 'verify2fa'])->name('staff.verify2fa');
+
+
+
+
+Route::get('staff/recoverEmail', [StaffController::class, 'showRecoveryForm'])->name('staff.showRecoveryForm');
+Route::post('staff/recoverPassword', [StaffController::class, 'sendVerificationCode'])->name('staff.sendVerificationCode');
+Route::get('staff/recovery', function () {
+    return view('staffAuth.recovery');
+})->name('staff.recovery');
+Route::post('staff/verifyCode', [StaffController::class, 'verifyCode'])->name('staff.verifyCode');
+Route::get('staff/resetPasswordForm', function () {
+    return view('staffAuth.resetPasswordForm');
+})->name('staff.resetPasswordForm');
+Route::post('staff/resetPassword', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
+
+

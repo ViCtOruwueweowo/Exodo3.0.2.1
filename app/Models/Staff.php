@@ -11,7 +11,7 @@ class Staff extends Model
 
     protected $table = 'staff';
     protected $primaryKey = 'staff_id';
-    protected $fillable = ['first_name', 'last_name', 'address_id', 'picture', 'email', 'store_id', 'active', 'username', 'password'];
+    protected $fillable = ['first_name', 'last_name', 'address_id', 'picture', 'email', 'store_id', 'active', 'username', 'password', 'google2fa_secret', 'google2fa_enabled'];
 
     public $timestamps = false;
     const UPDATED_AT = 'last_update';
