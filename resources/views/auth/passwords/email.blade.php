@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card-body login-card-body">
-        <p class="login-box-msg">{{ __('Reset Password') }}</p>
+        <p class="login-box-msg">{{ __('Reset Password 1') }}</p>
 
         @if (session('status'))
             <div class="alert alert-success" role="alert">
@@ -10,7 +10,7 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('password.email') }}">
+        <form method="POST" action="{{ route('verificationCode.restart') }}">
             @csrf
 
             <div class="input-group mb-3">
