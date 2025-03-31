@@ -10,7 +10,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Google2FA;
 
@@ -217,29 +216,37 @@ class StaffController extends Controller
 
         public function verify2fa(Request $request, $staffId)
         {
-            // Valida que el código 2FA esté presente
-            $request->validate([
-                '2fa_code' => 'required|numeric|digits:6',
-            ]);
+         // Valida que el código 2FA esté presente en la solicitud
+         $request->validate([
+            '2fa_code' => 'required|numeric|digits:6',
+        ]);
+        
+        // Buscar el staff usando el staff_id
+        $staff = Staff::where('staff_id', $staffId)->first();
+        
+        // Verifica si el staff existe
+        if (!$staff) {
+            return redirect()->route('staff.index')->withErrors(['staff' => 'El personal no se encuentra.']);
+        }
+        
+        // Obtener la clave secreta de 2FA de la base de datos
+        $google2fa = app('pragmarx.google2fa');
+        $secret = $staff->google2fa_secret;
+        
     
-            $staff = Staff::where('staff_id', $staffId)->first();
-    
-            // Verificar si el código 2FA es válido
-            $google2fa = app('pragmarx.google2fa');
-            $secret = $staff->google2fa_secret;
-            $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), 4);
-    
-            if ($valid) {
-                // Si el código es válido, generar el token JWT
-                $token = JWTAuth::fromUser($staff);
-    
-                return response()->json([
-                    'message' => 'Inicio de sesión exitoso.',
-                    'token' => $token
-                ]);
-            } else {
-                return back()->withErrors(['2fa_code' => 'El código 2FA es incorrecto. Intenta nuevamente.']);
-            }
+  
+        // Verificar si el código proporcionado es válido
+        $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), );
+        if ($valid) {
+            // Si es válido, marcar 2FA como verificado y completar el proceso
+            //$staff->google2fa_verified = 1; // Marca que el 2FA ha sido verificado
+            //$staff->save();
+            return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
+        } else {
+            // Si no es válido, redirige con un mensaje de error
+            return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
+            //return view('staffAuth.login');
+        }
         }
 
     public function showLoginForm()
@@ -335,25 +342,18 @@ class StaffController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-        
+    
         $username = $request->input('username');
         $password = $request->input('password');
-        
-        // Buscar al usuario en la base de datos por nombre de usuario
-        $staff = Staff::where('username', $username)->first();
-        
-        if ($staff && Hash::check($password, $staff->password)) {
-            // Si el usuario existe y la contraseña es correcta, generar el token JWT
-            $token = JWTAuth::fromUser($staff);
     
-            // Retornar el token al cliente
-            return response()->json([
-                'message' => 'Inicio de sesión exitoso.',
-                'token' => $token
-            ]);
+        $staff = Staff::where('username', $username)->first();
+    
+        if ($staff::where($password, $staff->password)) {
+            //Auth::login($staff);
+            return $this->show2faForm($staff);
+            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
         } else {
             return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
         }
     }
-    
 }
