@@ -1,16 +1,4 @@
-import Popper from '@popperjs/core/dist/umd/popper.js';
-import jQuery from 'jquery';
-import axios from 'axios';
 import 'bootstrap';
-
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
-
-window.Popper = Popper;
-window.$ = window.jQuery = jQuery;
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -18,6 +6,7 @@ window.$ = window.jQuery = jQuery;
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -36,6 +25,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
 //     key: import.meta.env.VITE_PUSHER_APP_KEY,
+//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
 //     wsHost: import.meta.env.VITE_PUSHER_HOST ?? `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
 //     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
 //     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,

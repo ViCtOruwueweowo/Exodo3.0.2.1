@@ -13,7 +13,6 @@ use App\Http\Controllers\FilmController;
 use App\Http\Controllers\FilmActorController;
 use App\Http\Controllers\FilmCategoryController;
 use App\Http\Controllers\LanguageController;
-use App\Models\Film;
 use App\Http\Controllers\FilmTextController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PaymentController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\VerificationCodeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,8 @@ use App\Http\Controllers\RentalController;
 
 
 Auth::routes();
+
+Route::post('verificationCode/restart', [VerificationCodeController::class, 'sendVerificationCode'])->name('verificationCode.restart');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
