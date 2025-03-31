@@ -21,7 +21,6 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\VerificationCodeController;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
