@@ -214,47 +214,28 @@ class StaffController extends Controller
         }
 
 
-        public function verify2fa(Request $request, $staffId)
-        {
+    public function verify2fa(Request $request, $staffId)
+    {
          // Valida que el código 2FA esté presente en la solicitud
          $request->validate([
             '2fa_code' => 'required|numeric|digits:6',
         ]);
-        
+
         // Buscar el staff usando el staff_id
         $staff = Staff::where('staff_id', $staffId)->first();
-        
+
         // Verifica si el staff existe
         if (!$staff) {
             return redirect()->route('staff.index')->withErrors(['staff' => 'El personal no se encuentra.']);
         }
-        
+
         // Obtener la clave secreta de 2FA de la base de datos
         $google2fa = app('pragmarx.google2fa');
         $secret = $staff->google2fa_secret;
-        
-    
-            $staff = Staff::where('staff_id', $staffId)->first();
-    
-            // Verificar si el código 2FA es válido
-            $google2fa = app('pragmarx.google2fa');
-            $secret = $staff->google2fa_secret;
-            $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), 4);
-    
-            if ($valid) {
-                // Si el código es válido, generar el token JWT
-                $token = JWTAuth::attempt(['username' => $staff->username, 'password' => $request->input('password')]); 
-    
-                return response()->json([
-                    'message' => 'Inicio de sesión exitoso.',
-                    'token' => $token
-                ]);
-            } else {
-                return back()->withErrors(['2fa_code' => 'El código 2FA es incorrecto. Intenta nuevamente.']);
-            }
-  
+
         // Verificar si el código proporcionado es válido
-        $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), );
+        $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'));
+
         if ($valid) {
             // Si es válido, marcar 2FA como verificado y completar el proceso
             //$staff->google2fa_verified = 1; // Marca que el 2FA ha sido verificado
@@ -265,12 +246,34 @@ class StaffController extends Controller
             return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
             //return view('staffAuth.login');
         }
-        }
+    }
 
     public function showLoginForm()
     {
         return view('staffAuth.login');
         
+    }
+
+    
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    
+        $username = $request->input('username');
+        $password = $request->input('password');
+    
+        $staff = Staff::where('username', $username)->first();
+    
+        if ($staff::where($password, $staff->password)) {
+            //Auth::login($staff);
+            return $this->show2faForm($staff);
+            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
+        } else {
+            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
+        }
     }
 
     public function showRecoveryForm()
@@ -354,43 +357,4 @@ class StaffController extends Controller
         }
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        $credentials = $request->only('username', 'password');
-
-        // Intentar autenticar al usuario
-        if (!$token = Auth::guard('staff')->attempt($credentials)) {
-            return response()->json(['error' => 'Credenciales inválidas'], 401);
-        }
-        
-        return redirect()->route('home')->with([
-            'status' => 'success',
-            'message' => 'Inicio de sesión exitoso.',
-        ]);
-    }
-
-    public function logout(Request $request)
-    {
-        try {
-            // Invalidar el token
-            Auth::guard('staff')->logout();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Sesión cerrada correctamente'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No se pudo cerrar sesión'
-            ], 500);
-        }
-    }
-
-    
 }
