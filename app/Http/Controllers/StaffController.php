@@ -231,7 +231,7 @@ class StaffController extends Controller
     
             if ($valid) {
                 // Si el código es válido, generar el token JWT
-                $token = JWTAuth::fromUser($staff);
+                $token = JWTAuth::attempt(['username' => $staff->username, 'password' => $request->input('password')]); 
     
                 return response()->json([
                     'message' => 'Inicio de sesión exitoso.',
@@ -335,25 +335,37 @@ class StaffController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
+
+        $credentials = $request->only('username', 'password');
+
+        // Intentar autenticar al usuario
+        if (!$token = Auth::guard('staff')->attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
+        }
         
-        $username = $request->input('username');
-        $password = $request->input('password');
-        
-        // Buscar al usuario en la base de datos por nombre de usuario
-        $staff = Staff::where('username', $username)->first();
-        
-        if ($staff && Hash::check($password, $staff->password)) {
-            // Si el usuario existe y la contraseña es correcta, generar el token JWT
-            $token = JWTAuth::fromUser($staff);
-    
-            // Retornar el token al cliente
+        return redirect()->route('home')->with([
+            'status' => 'success',
+            'message' => 'Inicio de sesión exitoso.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        try {
+            // Invalidar el token
+            Auth::guard('staff')->logout();
+
             return response()->json([
-                'message' => 'Inicio de sesión exitoso.',
-                'token' => $token
-            ]);
-        } else {
-            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
+                'status' => 'success',
+                'message' => 'Sesión cerrada correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se pudo cerrar sesión'
+            ], 500);
         }
     }
+
     
 }

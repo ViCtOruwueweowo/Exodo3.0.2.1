@@ -38,7 +38,7 @@ return [
         // Guard para 'staff' - este usa JWT para la autenticación del personal
         'staff' => [
             'driver' => 'jwt',  // Usa JWT en lugar de sesión
-            'provider' => 'staffs',
+            'provider' => 'staff',
         ],
     ],
 
@@ -63,7 +63,7 @@ return [
         ],
 
         // Proveedor para el modelo 'Staff' (empleados)
-        'staffs' => [
+        'staff' => [
             'driver' => 'eloquent',
             'model' => App\Models\Staff::class,  // Modelo de empleado (Staff)
         ],

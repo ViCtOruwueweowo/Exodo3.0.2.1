@@ -4,11 +4,8 @@
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
         <a href="{{ route('profile.show') }}" class="d-block">Perfil</a>
-
-
         </div>
     </div>
-
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
