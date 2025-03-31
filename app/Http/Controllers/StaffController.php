@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Staff;
 use App\Models\Address;
 use Illuminate\Http\Request;
@@ -28,9 +28,10 @@ class StaffController extends Controller
                 'staff.active',
                 'staff.username',
                 'staff.password',
-                'staff.picture',
+                'staff.picture'
             )
             ->get();
+
         return view('staffs.index', compact('staffs'));
     }
 
@@ -41,9 +42,7 @@ class StaffController extends Controller
             'address as address_name'
         )->get();
 
-        $stores = Store::select(
-            'store_id',
-        )->get();
+        $stores = Store::select('store_id')->get();
         
         return view('staffs.create', compact('addresses', 'stores'));
     }
@@ -145,6 +144,7 @@ class StaffController extends Controller
     {
         $addresses = Address::select('address_id', 'address as address_name')->get();
         $stores = Store::select('store_id')->get();
+        
         return view('staffAuth.register', compact('addresses', 'stores'));
     }
 
@@ -179,82 +179,64 @@ class StaffController extends Controller
 
         $staff->save();
 
-       //return $this->show2faForm($staff);
-       return view('staffAuth.login');
+        return view('staffAuth.login');
     }
 
-        public function show2faForm(Staff $staff)
-        {
-            // Obtén el staff usando el staff_id del request
-            $staff = Staff::where('staff_id', $staff->staff_id)->first();
-            // Inicializar Google2FA
-            $google2fa = app('pragmarx.google2fa');
-            $secret = $staff->google2fa_secret;
-            
-        // Verificar si el staff tiene un google2fa_secret. Si no lo tiene, generarlo.
+    public function show2faForm(Staff $staff)
+    {
+        $staff = Staff::where('staff_id', $staff->staff_id)->first();
+        $google2fa = app('pragmarx.google2fa');
+        $secret = $staff->google2fa_secret;
+        
         if (!$staff->google2fa_secret) {
             $secret = $google2fa->generateSecretKey();
             $staff->google2fa_secret = $secret;
-            $staff->google2fa_enabled = 1;  // Activa la autenticación de 2FA
+            $staff->google2fa_enabled = 1;
             $staff->save();
         }
 
-        // Generar el código QR en formato base64
         $QR_Image = $google2fa->getQRCodeInline(
-            config('Laravel'),       // Nombre de la aplicación
-            $staff->email,            // El email del usuario
-            $staff->google2fa_secret  // La clave secreta de 2FA
+            config('Laravel'),
+            $staff->email,
+            $staff->google2fa_secret
         );
-            // Pasar la imagen QR y la clave secreta a la vista
-            return view('auth.codegoogle', [
-                'QR_Image' => $QR_Image,
-                'secret' => $secret,
-                'staff' => $staff, // Asegúrate de pasar el $staff a la vist
-            ]);
-        }
 
+        return view('auth.codegoogle', [
+            'QR_Image' => $QR_Image,
+            'secret' => $secret,
+            'staff' => $staff,
+        ]);
+    }
 
     public function verify2fa(Request $request, $staffId)
     {
-         // Valida que el código 2FA esté presente en la solicitud
-         $request->validate([
+        $request->validate([
             '2fa_code' => 'required|numeric|digits:6',
         ]);
 
-        // Buscar el staff usando el staff_id
         $staff = Staff::where('staff_id', $staffId)->first();
 
-        // Verifica si el staff existe
         if (!$staff) {
             return redirect()->route('staff.index')->withErrors(['staff' => 'El personal no se encuentra.']);
         }
 
-        // Obtener la clave secreta de 2FA de la base de datos
         $google2fa = app('pragmarx.google2fa');
         $secret = $staff->google2fa_secret;
 
-        // Verificar si el código proporcionado es válido
         $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'));
 
         if ($valid) {
-            // Si es válido, marcar 2FA como verificado y completar el proceso
-            //$staff->google2fa_verified = 1; // Marca que el 2FA ha sido verificado
-            //$staff->save();
             return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
         } else {
-            // Si no es válido, redirige con un mensaje de error
             return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
-            //return view('staffAuth.login');
         }
     }
 
     public function showLoginForm()
     {
         return view('staffAuth.login');
-        
     }
 
-    
     public function login(Request $request)
     {
         $request->validate([
@@ -267,14 +249,28 @@ class StaffController extends Controller
     
         $staff = Staff::where('username', $username)->first();
     
-        if ($staff::where($password, $staff->password)) {
-            //Auth::login($staff);
-            return $this->show2faForm($staff);
-            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
+        // Verificar si el staff existe y si la contraseña es correcta
+        if ($staff && Hash::check($password, $staff->password)) {
+            // Generar el token JWT
+            $token = JWTAuth::fromUser($staff);
+    
+            // Guardar el token en el backend (base de datos, por ejemplo)
+            $staff->jwt_token = $token;
+            $staff->save();
+    
+            // Obtener la vista del formulario de 2FA y envolverla en una respuesta HTTP
+            $view = $this->show2faForm($staff);
+            $response = response($view);
+            
+            // Agregar el token a la cookie en la respuesta
+            return $response->cookie('jwt_token', $token, 60); // Cookie válida 60 minutos
         } else {
             return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
         }
     }
+    
+    
+    
 
     public function showRecoveryForm()
     {
@@ -300,8 +296,7 @@ class StaffController extends Controller
         }
 
         Mail::raw("Tu código de verificación es: $verificationCode", function ($message) use ($email) {
-            $message->to($email)
-                    ->subject('Código de Verificación');
+            $message->to($email)->subject('Código de Verificación');
         });
 
         return redirect()->route('staff.recovery')->with([
@@ -323,10 +318,9 @@ class StaffController extends Controller
         $staff = Staff::where('email', $email)->first();
 
         if ($staff && Hash::check($verificationCode, $staff->staff_code)) {
-            // Código verificado correctamente, redirigir a la siguiente vista
             return redirect()->route('staff.resetPasswordForm')->with([
                 'status' => 'success',
-                'email'=> $email,
+                'email' => $email,
                 'message' => 'Código verificado correctamente. Por favor, restablece tu contraseña.',
             ]);
         } else {
@@ -340,7 +334,7 @@ class StaffController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
-    
+
         $email = $request->input('email');
         $password = $request->input('password');
 
@@ -356,5 +350,10 @@ class StaffController extends Controller
             return back()->withErrors(['email' => 'No se encontró un usuario con ese correo electrónico.']);
         }
     }
-
+    
 }
+
+
+    
+    
+

@@ -20,15 +20,8 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <form id="logout-form" action="{{ route('staff.logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="nav-icon fas fa-sign-out-alt"></i>
-                    <p>Salir</p>
-                </a>
-            </li>
+        
+            
             
              <!-- 
          

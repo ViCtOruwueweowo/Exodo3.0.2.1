@@ -1,8 +1,8 @@
 <?php
-
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Staff;
 use App\Http\Controllers\ActorController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CategoryController;
@@ -49,7 +49,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['jwt.auth'])->group(function () {
-
 
 });
 
@@ -174,4 +173,4 @@ Route::get('staff/resetPasswordForm', function () {
 })->name('staff.resetPasswordForm');
 Route::post('staff/resetPassword', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
 
-Route::post('/staff/logout', [StaffController::class, 'logout'])->name('staff.logout');
+

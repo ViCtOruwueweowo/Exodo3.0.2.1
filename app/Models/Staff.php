@@ -4,17 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Staff extends Authenticatable implements JWTSubject
 {
-    use HasFactory; 
+    use HasFactory;
 
     protected $table = 'staff';
     protected $primaryKey = 'staff_id';
-    protected $fillable = ['first_name', 'last_name', 'address_id', 'picture', 'email', 'store_id', 'active', 'username', 'password', 'google2fa_secret', 'google2fa_enabled'];
+    protected $fillable = [
+        'first_name', 
+        'last_name', 
+        'address_id', 
+        'picture', 
+        'email', 
+        'store_id', 
+        'active', 
+        'username', 
+        'password', 
+        'google2fa_secret', 
+        'google2fa_enabled',
+        'jwt_token' // Asegúrate de que jwt_token esté en el array $fillable
+    ];
 
     public $timestamps = false;
     const UPDATED_AT = 'last_update';
@@ -44,5 +56,4 @@ class Staff extends Authenticatable implements JWTSubject
     {
         return $this->where('username', $username)->first();
     }
-
 }
