@@ -4,11 +4,8 @@
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
         <a href="{{ route('profile.show') }}" class="d-block">Perfil</a>
-
-
         </div>
     </div>
-
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -22,6 +19,17 @@
                     </p>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <form id="logout-form" action="{{ route('staff.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>Salir</p>
+                </a>
+            </li>
+            
              <!-- 
          
 

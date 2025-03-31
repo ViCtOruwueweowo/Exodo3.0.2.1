@@ -48,6 +48,11 @@ Route::middleware('auth')->group(function () {
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
+Route::middleware(['jwt.auth'])->group(function () {
+
+
+});
+
 Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
 Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
 Route::post('/countries', [CountryController::class, 'store'])->name('countries.store');
@@ -146,6 +151,8 @@ Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->n
 Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update'); 
 Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
+
+
 Route::get('staff/register', [StaffController::class, 'showRegisterForm'])->name('staff.register');
 Route::post('staff/register', [StaffController::class, 'registerForm'])->name('staff.registerForm');    
 Route::get('/', [StaffController::class, 'showLoginForm'])->name('staff.login');
@@ -167,4 +174,4 @@ Route::get('staff/resetPasswordForm', function () {
 })->name('staff.resetPasswordForm');
 Route::post('staff/resetPassword', [StaffController::class, 'resetPassword'])->name('staff.resetPassword');
 
-
+Route::post('/staff/logout', [StaffController::class, 'logout'])->name('staff.logout');

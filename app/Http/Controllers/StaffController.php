@@ -234,6 +234,24 @@ class StaffController extends Controller
         $secret = $staff->google2fa_secret;
         
     
+            $staff = Staff::where('staff_id', $staffId)->first();
+    
+            // Verificar si el código 2FA es válido
+            $google2fa = app('pragmarx.google2fa');
+            $secret = $staff->google2fa_secret;
+            $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), 4);
+    
+            if ($valid) {
+                // Si el código es válido, generar el token JWT
+                $token = JWTAuth::attempt(['username' => $staff->username, 'password' => $request->input('password')]); 
+    
+                return response()->json([
+                    'message' => 'Inicio de sesión exitoso.',
+                    'token' => $token
+                ]);
+            } else {
+                return back()->withErrors(['2fa_code' => 'El código 2FA es incorrecto. Intenta nuevamente.']);
+            }
   
         // Verificar si el código proporcionado es válido
         $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'), );
@@ -342,18 +360,26 @@ class StaffController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-    
-        $username = $request->input('username');
-        $password = $request->input('password');
-    
-        $staff = Staff::where('username', $username)->first();
-    
-        if ($staff::where($password, $staff->password)) {
-            //Auth::login($staff);
-            return $this->show2faForm($staff);
-            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
-        } else {
-            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
+
+        $credentials = $request->only('username', 'password');
+
+        // Intentar autenticar al usuario
+        if (!$token = Auth::guard('staff')->attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
+        
+        return redirect()->route('home')->with([
+            'status' => 'success',
+            'message' => 'Inicio de sesión exitoso.',
+        ]);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::guard('staff')->logout();
+        return redirect()->route('staff.login')->with('success', 'Sesión cerrada correctamente.');
+    }
+    
+
+    
 }

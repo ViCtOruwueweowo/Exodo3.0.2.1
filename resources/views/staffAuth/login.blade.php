@@ -24,7 +24,7 @@
       <form action="{{ route('staff1.login') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label for="username" class="form-label">Correo</label>
+          <label for="username" class="form-label">Usuario</label>
           <input type="text" name="username" id="username" class="form-control" required>
         </div>
 
