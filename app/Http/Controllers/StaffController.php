@@ -214,43 +214,66 @@ class StaffController extends Controller
         }
 
 
-        public function verify2fa(Request $request, $staffId)
-{
- // Valida que el código 2FA esté presente en la solicitud
- $request->validate([
-    '2fa_code' => 'required|numeric|digits:6',
-]);
+    public function verify2fa(Request $request, $staffId)
+    {
+         // Valida que el código 2FA esté presente en la solicitud
+         $request->validate([
+            '2fa_code' => 'required|numeric|digits:6',
+        ]);
 
-// Buscar el staff usando el staff_id
-$staff = Staff::where('staff_id', $staffId)->first();
+        // Buscar el staff usando el staff_id
+        $staff = Staff::where('staff_id', $staffId)->first();
 
-// Verifica si el staff existe
-if (!$staff) {
-    return redirect()->route('staff.index')->withErrors(['staff' => 'El personal no se encuentra.']);
-}
+        // Verifica si el staff existe
+        if (!$staff) {
+            return redirect()->route('staff.index')->withErrors(['staff' => 'El personal no se encuentra.']);
+        }
 
-// Obtener la clave secreta de 2FA de la base de datos
-$google2fa = app('pragmarx.google2fa');
-$secret = $staff->google2fa_secret;
+        // Obtener la clave secreta de 2FA de la base de datos
+        $google2fa = app('pragmarx.google2fa');
+        $secret = $staff->google2fa_secret;
 
-// Verificar si el código proporcionado es válido
-$valid = $google2fa->verifyKey($secret, $request->input('2fa_code'));
+        // Verificar si el código proporcionado es válido
+        $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'));
 
-if ($valid) {
-    // Si es válido, marcar 2FA como verificado y completar el proceso
-    //$staff->google2fa_verified = 1; // Marca que el 2FA ha sido verificado
-    //$staff->save();
-    return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
-} else {
-    // Si no es válido, redirige con un mensaje de error
-    return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
-    //return view('staffAuth.login');
-}
-}
+        if ($valid) {
+            // Si es válido, marcar 2FA como verificado y completar el proceso
+            //$staff->google2fa_verified = 1; // Marca que el 2FA ha sido verificado
+            //$staff->save();
+            return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
+        } else {
+            // Si no es válido, redirige con un mensaje de error
+            return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
+            //return view('staffAuth.login');
+        }
+    }
+
     public function showLoginForm()
     {
         return view('staffAuth.login');
         
+    }
+
+    
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    
+        $username = $request->input('username');
+        $password = $request->input('password');
+    
+        $staff = Staff::where('username', $username)->first();
+    
+        if ($staff::where($password, $staff->password)) {
+            //Auth::login($staff);
+            return $this->show2faForm($staff);
+            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
+        } else {
+            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
+        }
     }
 
     public function showRecoveryForm()
@@ -334,24 +357,4 @@ if ($valid) {
         }
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-    
-        $username = $request->input('username');
-        $password = $request->input('password');
-    
-        $staff = Staff::where('username', $username)->first();
-    
-        if ($staff::where($password, $staff->password)) {
-            //Auth::login($staff);
-            return $this->show2faForm($staff);
-            //return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
-        } else {
-            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
-        }
-    }
 }
