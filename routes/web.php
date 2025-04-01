@@ -39,7 +39,6 @@ Auth::routes();
 
 Route::post('verificationCode/restart', [VerificationCodeController::class, 'sendVerificationCode'])->name('verificationCode.restart');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
@@ -49,8 +48,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['jwt.auth'])->group(function () {
-
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
+
 
 Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
 Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
@@ -156,6 +156,7 @@ Route::get('staff/register', [StaffController::class, 'showRegisterForm'])->name
 Route::post('staff/register', [StaffController::class, 'registerForm'])->name('staff.registerForm');    
 Route::get('/', [StaffController::class, 'showLoginForm'])->name('staff.login');
 Route::post('/', [StaffController::class, 'login'])->name('staff1.login');
+Route::post('/logout', [StaffController::class, 'logout'])->name('logout');
 
 Route::post('/staff/{staffId}/verify-2fa', [StaffController::class, 'verify2fa'])->name('staff.verify2fa');
 

@@ -6,6 +6,7 @@ use App\Models\Staff;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -226,6 +227,8 @@ class StaffController extends Controller
         $valid = $google2fa->verifyKey($secret, $request->input('2fa_code'));
 
         if ($valid) {
+            $staff->active = 1;
+            $staff->save();
             return redirect()->route('staff.index')->with('success', 'Inicio de sesión exitoso.');
         } else {
             return redirect()->route('staff.login')->withErrors(['2fa_code' => 'El código de 2FA es incorrecto. Intenta nuevamente.']);
@@ -350,6 +353,32 @@ class StaffController extends Controller
             return back()->withErrors(['email' => 'No se encontró un usuario con ese correo electrónico.']);
         }
     }
+
+
+    public function logout(Request $request)
+{
+    // Obtener el token desde la cookie
+    $token = $request->cookie('jwt_token');
+
+    if ($token) {
+        try {
+            // Invalidar el token en el backend (opcional)
+            $staff = JWTAuth::setToken($token)->authenticate();
+            if ($staff) {
+                $staff->jwt_token = null;
+                $staff->save();
+            }
+
+            // Invalidar el token en JWTAuth
+            JWTAuth::invalidate($token);
+        } catch (\Exception $e) {
+            // Manejo de errores (puede ser un token inválido o expirado)
+        }
+    }
+
+    // Eliminar la cookie y redirigir al login
+    return redirect('/')->withCookie(Cookie::forget('jwt_token'));
+}
     
 }
 

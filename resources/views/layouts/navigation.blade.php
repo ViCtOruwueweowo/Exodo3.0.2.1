@@ -1,11 +1,11 @@
 <!-- Sidebar -->
 <div class="sidebar">
-    <!-- Sidebar user panel (optional) -->
+    <!-- Sidebar user panel (optional)
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="info">
         <a href="{{ route('profile.show') }}" class="d-block">Perfil</a>
         </div>
-    </div>
+    </div>-->
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -44,6 +44,18 @@
                 </a>
             </li>
 -->
+<li class="nav-item">
+    <a href="{{ route('logout') }}" class="nav-link"
+       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <i class="nav-icon fas fa-sign-out-alt"></i>
+        <p>Cerrar Sesión</p>
+    </a>
+</li>
+
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
             <li class="nav-item">
                 <a href="{{ route('countries.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-globe"></i>

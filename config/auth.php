@@ -59,7 +59,8 @@ return [
         // Proveedor para el modelo 'User' (usuarios normales)
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,  // Modelo de usuario
+          //'model' => App\Models\User::class, 
+            'model' => App\Models\Staff::class, 
         ],
 
         // Proveedor para el modelo 'Staff' (empleados)
