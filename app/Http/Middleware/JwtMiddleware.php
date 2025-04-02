@@ -2,42 +2,48 @@
 
 namespace App\Http\Middleware;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Closure;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use Symfony\Component\HttpFoundation\Response;
 
 class JwtMiddleware
 {
-    /**
-     * Maneja una solicitud entrante.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure $next
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next)
     {
         try {
-            // Intentar obtener el token desde la cookie
-            $token = $request->cookie('jwt_token');
+            // Intentar obtener el token desde las cabeceras
+            $token = $request->bearerToken();
 
+            // Si no hay token en el header, intentar obtenerlo de la cookie
             if (!$token) {
-                return redirect()->route('staff.login');
+                $token = $request->cookie('jwt_token');
+                
+                // Si el token existe en la cookie, agregarlo al header Authorization
+                if ($token) {
+                    $request->headers->set('Authorization', 'Bearer ' . $token);
+                }
             }
 
-            // Establecer el token manualmente en JWTAuth
-            JWTAuth::setToken($token);
+            if (!$token) {
+                return response()->json(['error' => 'Token no encontrado'], Response::HTTP_UNAUTHORIZED);
+            }
 
-            // Intentamos autenticar al usuario con el token
-            if (!JWTAuth::parseToken()->authenticate()) {
-                return redirect()->route('staff.login');
+            // Establecer el token para la autenticación
+            JWTAuth::setToken($token);
+            $user = JWTAuth::authenticate();
+
+            if (!$user) {
+                return response()->json(['error' => 'Usuario no autenticado'], Response::HTTP_UNAUTHORIZED);
             }
 
             return $next($request);
-        } catch (JWTException $e) {
-            // Si ocurre una excepción de JWT, redirigir al login
-            return redirect()->route('staff.login');
+        } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['error' => 'Token expirado'], Response::HTTP_UNAUTHORIZED);
+        } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['error' => 'Token inválido'], Response::HTTP_UNAUTHORIZED);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'Error al procesar el token'], Response::HTTP_UNAUTHORIZED);
         }
     }
 }

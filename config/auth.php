@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web', // El guard que se usará por defecto
+        'guard' => 'staff', // El guard que se usará por defecto
         'passwords' => 'staffs', // Especifica que los resets de contraseñas son para 'staffs'
     ],
 
@@ -85,7 +85,7 @@ return [
     'passwords' => [
         // Configuración para el reset de contraseñas de 'staff'
         'staffs' => [
-            'provider' => 'staffs',
+            'provider' => 'staff',
             'table' => 'password_resets',
             'expire' => 60,  // Tiempo de expiración en minutos
             'throttle' => 60,  // Tiempo de espera para nuevos intentos

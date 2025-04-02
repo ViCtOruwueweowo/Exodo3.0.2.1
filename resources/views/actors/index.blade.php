@@ -10,7 +10,13 @@
         </div>
     @endif
 
-    <a href="{{ route('actors.create') }}" class="btn btn-primary mb-3">Crear Nuevo Actor</a>
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
+        <a href="{{ route('actors.create') }}" class="btn btn-primary mb-3">Crear Nuevo Actor</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -23,7 +29,9 @@
                             <th>Nombre</th>
                             <th>Apellido</th>
                             <th>Última actualización</th>
+                            @if(in_array($role_id, [1, 2,]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +41,8 @@
                                 <td>{{ $actor->first_name }}</td>
                                 <td>{{ $actor->last_name }}</td>
                                 <td>{{ $actor->last_update }}</td>
+                                @if(in_array($role_id, [1, 2]))
+
                                 <td>
                                     <a href="{{ route('actors.edit', $actor->actor_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
@@ -43,14 +53,15 @@
                                     </form>
 
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
             <div class="d-flex justify-content-center">
-    {{ $actors->links() }}
-</div>
+                {{ $actors->links() }}
+            </div>
         </div>
     </div>
 </div>

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+
 class Staff extends Authenticatable implements JWTSubject
 {
     use HasFactory;
@@ -25,7 +26,8 @@ class Staff extends Authenticatable implements JWTSubject
         'password', 
         'google2fa_secret', 
         'google2fa_enabled',
-        'jwt_token' // Asegúrate de que jwt_token esté en el array $fillable
+        'jwt_token', // Asegúrate de que jwt_token esté en el array $fillable
+        'role_id', // Asegúrate de que role_id esté en el array $fillable
     ];
 
     public $timestamps = false;
@@ -56,4 +58,10 @@ class Staff extends Authenticatable implements JWTSubject
     {
         return $this->where('username', $username)->first();
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
 }

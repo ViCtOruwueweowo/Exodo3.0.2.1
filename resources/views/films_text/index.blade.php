@@ -4,6 +4,10 @@
 <div class="container-fluid">
     <h1 class="mb-3">Lista de Películas</h1>
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -21,7 +25,10 @@
 <body>
 
 <div class="container mt-5">
+    @if(in_array($role_id, [1, 2]))
+
     <a href="{{ route('films.create') }}" class="btn btn-primary">Agregar</a>
+    @endif
     <br><br>
     <!-- Contenedor con desplazamiento vertical -->
 
@@ -36,7 +43,9 @@
             <th>ID</th>
             <th>Título</th>
             <th>Descripción</th>
+            @if(in_array($role_id, [1, 2]))
             <th>Opciones</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -45,6 +54,7 @@
                 <td>{{ $film->film_id }}</td>
                 <td>{{ $film->title }}</td>
                 <td>{{ $film->description }}</td>
+                @if(in_array($role_id, [1, 2]))
                 <td>
                     <!-- Botón de editar (aún sin acción) -->
                     <a type="button" href="{{ route('films.edit', $film->film_id) }}" class="btn btn-warning">Editar</a><br><br>
@@ -56,6 +66,7 @@
                         <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
                     </form>
                 </td>
+                @endif
             </tr>
         @endforeach
     </tbody>

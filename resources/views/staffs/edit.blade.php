@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ route('staff.update', $staff->staff_id) }}" method="POST">
+    <form action="{{ route('staff.update', $staff->staff_id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -95,11 +95,30 @@
 
         <div class="form-group">
             <label for="password">Contraseña:</label>
-            <input type="password" name="password" id="password" class="form-control" value="{{ old('password') }}" required>
+            <input type="password" name="password" id="password" class="form-control" value="{{ old('password') }}">
             @error('password')
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+
+        <!-- Campo para seleccionar el rol -->
+        <div class="form-group">
+    <label for="role_id">Rol:</label>
+    <select name="role_id" id="role_id" class="form-control" required>
+        <option value="">Seleccione un rol</option>
+        @foreach($roles as $index => $role)
+            <option value="{{ $role->id }}" 
+                {{ old('role_id', $staff->role_id) == $role->id ? 'selected' : '' }}>
+                {{ $index + 1 }} {{ $role->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('role_id')
+        <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+
+
 
         <button type="submit" class="btn btn-primary mt-3">Actualizar Staff</button>
     </form>

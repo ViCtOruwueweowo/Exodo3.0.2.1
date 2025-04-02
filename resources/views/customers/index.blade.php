@@ -4,7 +4,13 @@
 <div class="container-fluid">
     <h1 class="mb-3">Lista de Clientes</h1>
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">Crear Nuevo Cliente</a>
+    @endif
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -25,7 +31,9 @@
                             <th>Dirección</th>
                             <th>Estado</th>
                             <th>Última Actualización</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +46,7 @@
                                 <td>{{ $customer->address->address ?? 'N/A' }}</td>
                                 <td>{{ $customer->active ? 'Activo' : 'Inactivo' }}</td>
                                 <td>{{ $customer->last_update }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <a href="{{ route('customers.edit', $customer->customer_id) }}" class="btn btn-warning btn-sm">Actualizar</a>
 
@@ -47,6 +56,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

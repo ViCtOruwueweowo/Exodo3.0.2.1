@@ -6,6 +6,10 @@
         <a href="{{ route('profile.show') }}" class="d-block">Perfil</a>
         </div>
     </div>-->
+
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -55,16 +59,16 @@
 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
     @csrf
 </form>
-
+@if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('countries.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-globe"></i>
                     <p>Continentes</p>
                 </a>
             </li>
+@endif
 
-
-
+@if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('cities.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-building"></i>
@@ -72,14 +76,15 @@
                 </a>
             </li>
 
-
+@endif
+@if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('address.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-map-marker-alt"></i>
                     <p>Direcciones</p>
                 </a>
             </li>
-
+@endif
             <li class="nav-item">
                 <a href="{{ route('actors.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-user"></i>
@@ -93,7 +98,7 @@
                     <p>Categorías</p>
                 </a>
             </li>
-
+            @if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('customers.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
@@ -102,7 +107,9 @@
                     </p>
                 </a>
             </li>
+@endif
 
+@if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('languages.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-users"></i>
@@ -111,7 +118,7 @@
                     </p>
                 </a>
             </li>
-
+@endif
             <li class="nav-item">
                 <a href="{{ route('films.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-film"></i>
@@ -125,21 +132,22 @@
                     <p>Texto de la película</p>
                 </a>
             </li>
-
+            @if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('inventarios.show') }}" class="nav-link">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>Inventario</p>
                 </a>
             </li>
-
+@endif
+@if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('Payments.show') }}" class="nav-link">
                     <i class="nav-icon fas fa-cogs"></i>
                     <p>Pagos</p>
                 </a>
             </li>
-
+@endif
             <li class="nav-item">
                 <a href="{{ route('film_actors.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-user-tag"></i>
@@ -153,14 +161,14 @@
                     <p>Relación Películas - Categorías</p>
                 </a>
             </li>
-
+            @if(in_array($role_id, [1, 3]))
             <li class="nav-item">
                 <a href="{{ route('store.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-tags"></i>
                     <p>Store</p>
                 </a>
             </li>
-
+@endif
             <li class="nav-item">
                 <a href="{{ route('staff.index') }}" class="nav-link">
                     <i class="nav-icon fas fa-tags"></i>

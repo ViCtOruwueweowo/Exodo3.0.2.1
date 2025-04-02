@@ -10,7 +10,14 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
+
     <a href="{{ route('rentals.create') }}" class="btn btn-primary mb-3">Crear Nuevo Rental</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -25,7 +32,9 @@
                             <th>Cliente</th>
                             <th>Fecha regreso</th>
                             <th>Encargado del staff</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +46,7 @@
                                 <td>{{ $rental->customer_name }}</td>
                                 <td>{{ $rental->return_date }}</td>
                                 <td>{{ $rental->staff_name }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <!-- Enlace para editar la película -->
                                     <a href="{{ route('rentals.edit', $rental->rental_id) }}" class="btn btn-warning btn-sm">Editar</a>
@@ -48,6 +58,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta renta?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

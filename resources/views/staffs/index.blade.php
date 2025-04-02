@@ -16,7 +16,13 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('staff.create') }}" class="btn btn-primary mb-3">Crear Nuevo Staff</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -35,7 +41,9 @@
                             <th>Estado</th>
                             <th>Nombre de usuario</th>
                             <th>Contraseña</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -51,6 +59,7 @@
                                 <td>{{ $staff->active }}</td>
                                 <td>{{ $staff->username }}</td>
                                 <td>{{ $staff->password }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <!-- Enlace para editar la película -->
                                     <a href="{{ route('staff.edit', $staff->staff_id) }}" class="btn btn-warning btn-sm">Editar</a>
@@ -62,6 +71,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este empleado?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

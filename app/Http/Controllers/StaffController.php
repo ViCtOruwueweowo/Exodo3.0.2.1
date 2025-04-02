@@ -6,6 +6,8 @@ use App\Models\Staff;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\Role;
+
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Hash;
@@ -87,43 +89,48 @@ class StaffController extends Controller
         $staff = Staff::findOrFail($staffId);
         $addresses = Address::select('address_id', 'address as address_name')->get();
         $stores = Store::select('store_id')->get();
+        $roles = Role::all(); // Asegúrate de que el modelo Role esté importado
 
-        return view('staffs.edit', compact('staff', 'addresses', 'stores'));
+        return view('staffs.edit', compact('staff', 'addresses', 'stores', 'roles'));
     }
 
     public function update(Request $request, $staffId)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'address_id' => 'required|integer',
-            'picture' => 'nullable|image',
-            'email' => 'required|email',
-            'store_id' => 'required|integer',
-            'active' => 'required|boolean',
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+{
+    $validated = $request->validate([
+        'first_name' => 'required|string',
+        'last_name' => 'required|string',
+        'address_id' => 'required|integer',
+        'picture' => 'nullable|image',
+        'email' => 'required|email',
+        'store_id' => 'required|integer',
+        'active' => 'required|boolean',
+        'username' => 'required|string',
+        'password' => 'required|string',
+        'role_id' => 'required|integer|exists:roles,id', // Asegura que el rol exista en la tabla roles
+    ]);
 
-        $staff = Staff::findOrFail($staffId);
-        $staff->first_name = $validated['first_name'];
-        $staff->last_name = $validated['last_name'];
-        $staff->address_id = $validated['address_id'];
-        $staff->email = $validated['email'];
-        $staff->store_id = $validated['store_id'];
-        $staff->active = $validated['active'];
-        $staff->username = $validated['username'];
-        $staff->password = $validated['password'];
-        $staff->last_update = now();
+    $staff = Staff::findOrFail($staffId);
+    $staff->first_name = $validated['first_name'];
+    $staff->last_name = $validated['last_name'];
+    $staff->address_id = $validated['address_id'];
+    $staff->email = $validated['email'];
+    $staff->store_id = $validated['store_id'];
+    $staff->active = $validated['active'];
+    $staff->username = $validated['username'];
+    $staff->role_id = $validated['role_id']; // Guardar el rol seleccionado
+    $staff->last_update = now();
 
-        if ($request->hasFile('picture')) {
-            $staff->picture = $request->file('picture')->store('staff');
-        }
+    // Hash de la contraseña
+    $staff->password = Hash::make($validated['password']);
 
-        $staff->save();
-
-        return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
+    if ($request->hasFile('picture')) {
+        $staff->picture = $request->file('picture')->store('staff');
     }
+
+    $staff->save();
+
+    return redirect()->route('staff.index')->with('success', 'Staff updated successfully.');
+}
 
     public function destroy($staffId)
     {
@@ -241,35 +248,46 @@ class StaffController extends Controller
     }
 
     public function login(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
+
+    $username = $request->input('username');
+    $password = $request->input('password');
+
+    $staff = Staff::where('username', $username)->first();
+
+    // Verificar si el staff existe y si la contraseña es correcta
+    if ($staff && Hash::check($password, $staff->password)) {
+        // Generar el token JWT
+        $token = JWTAuth::fromUser($staff);
+
+        // Guardar el token en la base de datos
+        $staff->jwt_token = $token;
+        $staff->save();
+
+        // Obtener el role_id
+        $roleId = $staff->role_id;
+
+        // Obtener la vista del formulario de 2FA
+        $view = $this->show2faForm($staff);
+        $response = response($view);
+
+        // Agregar cookies para JWT y role_id
+        return $response
+            ->cookie('jwt_token', $token, 60, '/', null, false, true, 'None') // Cookie válida 60 minutos
+            ->cookie('role_id', $roleId, 60, '/', null, false, true, 'None'); // Cookie válida 60 minutos
+    } else {
+        return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
+    }
+}
+
+
+    public function getUser()
     {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-    
-        $username = $request->input('username');
-        $password = $request->input('password');
-    
-        $staff = Staff::where('username', $username)->first();
-    
-        // Verificar si el staff existe y si la contraseña es correcta
-        if ($staff && Hash::check($password, $staff->password)) {
-            // Generar el token JWT
-            $token = JWTAuth::fromUser($staff);
-    
-            // Guardar el token en el backend (base de datos, por ejemplo)
-            $staff->jwt_token = $token;
-            $staff->save();
-    
-            // Obtener la vista del formulario de 2FA y envolverla en una respuesta HTTP
-            $view = $this->show2faForm($staff);
-            $response = response($view);
-            
-            // Agregar el token a la cookie en la respuesta
-            return $response->cookie('jwt_token', $token, 60); // Cookie válida 60 minutos
-        } else {
-            return back()->withErrors(['username' => 'Las credenciales no coinciden con nuestros registros.']);
-        }
+        return response()->json(auth('staff')->user());
     }
     
     
@@ -356,29 +374,31 @@ class StaffController extends Controller
 
 
     public function logout(Request $request)
-{
-    // Obtener el token desde la cookie
-    $token = $request->cookie('jwt_token');
+    {
+        // Obtener el token desde la cookie
+        $token = $request->cookie('jwt_token');
 
-    if ($token) {
-        try {
-            // Invalidar el token en el backend (opcional)
-            $staff = JWTAuth::setToken($token)->authenticate();
-            if ($staff) {
-                $staff->jwt_token = null;
-                $staff->save();
+        if ($token) {
+            try {
+                JWTAuth::setToken($token)->invalidate();
+
+                // Invalidar el token en el backend (opcional)
+                $staff = JWTAuth::setToken($token)->authenticate();
+                if ($staff) {
+                    $staff->jwt_token = null;
+                    $staff->save();
+                }
+
+                // Invalidar el token en JWTAuth
+                JWTAuth::invalidate($token);
+            } catch (\Exception $e) {
+                // Manejo de errores (puede ser un token inválido o expirado)
             }
-
-            // Invalidar el token en JWTAuth
-            JWTAuth::invalidate($token);
-        } catch (\Exception $e) {
-            // Manejo de errores (puede ser un token inválido o expirado)
         }
-    }
 
-    // Eliminar la cookie y redirigir al login
-    return redirect('/')->withCookie(Cookie::forget('jwt_token'));
-}
+        // Eliminar la cookie y redirigir al login
+        return redirect('/')->withCookie(Cookie::forget('jwt_token'));
+    }
     
 }
 

@@ -10,7 +10,13 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('cities.create') }}" class="btn btn-primary mb-3">Crear Nueva Ciudad</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -22,7 +28,9 @@
                             <th>ID</th>
                             <th>Ciudad</th>
                             <th>Continente</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -31,6 +39,7 @@
                 <td>{{ $citie->city_id }}</td>
                 <td>{{ $citie->city }}</td>
                 <td>{{ $citie->country->country }}</td>
+                @if(in_array($role_id, [1, 2]))
                 <td>
                                     <a href="{{ route('cities.edit', $citie->city_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
@@ -41,6 +50,7 @@
                                     </form>
 
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

@@ -9,9 +9,16 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
     <div class="container mt-1">
         <h1>Lista de Pagos</h1>
+        @if(in_array($role_id, [1, 2]))
+
         <a href="{{ route('Payment.create') }}" class="btn btn-primary mb-3">Agregar Pago</a>
+        @endif
 
         <div class="card">
         <div class="card-body">
@@ -28,7 +35,9 @@
             <th>Monto</th>
             <th>Fecha de Pago</th>
             <th>Última Actualización</th>
+            @if(in_array($role_id, [1, 2]))
             <th>Opciones</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -41,6 +50,7 @@
                 <td>{{ $payment->amount }}</td>
                 <td>{{ $payment->payment_date }}</td>
                 <td>{{ $payment->last_update }}</td>
+                @if(in_array($role_id, [1, 2]))
                 <td>
                     <!-- Botones de acción (editar, eliminar) -->
                     <a href="{{ route('Payment.edit', $payment->payment_id) }}" class="btn btn-warning btn-sm">Editar</a><br><br>
@@ -50,6 +60,7 @@
                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
                 </td>
+                @endif
             </tr>
         @endforeach
     </tbody>

@@ -3,6 +3,9 @@
 @section('content')
 <div class="container-fluid">
     <h1 class="mb-3">Lista de Películas</h1>
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -10,7 +13,9 @@
         </div>
     @endif
 
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('films.create') }}" class="btn btn-primary mb-3">Crear Nueva Película</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -30,7 +35,9 @@
                             <th>Costo de Reposición</th>
                             <th>Clasificación</th>
                             <th>Especiales</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +54,7 @@
                                 <td>{{ $film->replacement_cost }}</td>
                                 <td>{{ $film->rating }}</td>
                                 <td>{{ $film->special_features }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <!-- Enlace para editar la película -->
                                     <a href="{{ route('films.edit', $film->film_id) }}" class="btn btn-warning btn-sm">Editar</a>
@@ -58,6 +66,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta película?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

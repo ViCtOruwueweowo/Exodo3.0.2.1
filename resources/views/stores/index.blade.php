@@ -16,7 +16,14 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
+
     <a href="{{ route('store.create') }}" class="btn btn-primary mb-3">Crear Nueva Tienda</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -28,7 +35,9 @@
                             <th>ID</th>
                             <th>Manager encargado</th>
                             <th>Dirección</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +46,7 @@
                                 <td>{{ $store->store_id }}</td>
                                 <td>{{ $store->manager_staff }}</td>
                                 <td>{{ $store->address_name }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <!-- Formulario para eliminar la película -->
                                     <form action="{{ route('store.destroy', $store->store_id) }}"" method="POST" style="display:inline;">
@@ -45,6 +55,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta tienda?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

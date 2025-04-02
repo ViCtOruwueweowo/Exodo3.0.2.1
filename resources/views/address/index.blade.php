@@ -10,7 +10,13 @@
         </div>
     @endif
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('address.create') }}" class="btn btn-primary mb-3">Crear Nueva Dirección</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -26,7 +32,9 @@
                             <th>Ciudad</th>
                             <th>Código Postal</th>
                             <th>Teléfono</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +47,7 @@
                                 <td>{{ $address->city_name }}</td>
                                 <td>{{ $address->postal_code }}</td>
                                 <td>{{ $address->phone ?? 'N/A' }}</td> <!-- Manejo de valores nulos -->
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <a href="{{ route('address.edit', $address->address_id) }}" class="btn btn-warning btn-sm">Editar</a>
 
@@ -48,6 +57,7 @@
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta dirección?')">Eliminar</button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

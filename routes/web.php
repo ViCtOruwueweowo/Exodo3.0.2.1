@@ -1,4 +1,6 @@
 <?php
+use App\Http\Middleware\JwtMiddleware;
+use App\Http\Middleware\RoleMiddleware;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +39,14 @@ use App\Http\Controllers\VerificationCodeController;
 
 Auth::routes();
 
+Route::get('/check-auth', function () {
+    return response()->json(auth('staff')->user());
+})->middleware('jwt.auth');
+
+Route::get('/token', function () {
+    return response()->json(['token' => request()->cookie('jwt_token')]);
+});
+
 Route::post('verificationCode/restart', [VerificationCodeController::class, 'sendVerificationCode'])->name('verificationCode.restart');
 
 
@@ -47,12 +57,20 @@ Route::middleware('auth')->group(function () {
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
-Route::middleware(['jwt.auth'])->group(function () {
+/*Route::middleware(['jwt.auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    
+});*/
+
+Route::middleware([JwtMiddleware::class])->group(function() {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::middleware([RoleMiddleware::class . ':3'])->group(function () {
+        Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
+
+    });
 });
 
-
-Route::get('/countries', [CountryController::class, 'index'])->name('countries.index');
 Route::get('/countries/create', [CountryController::class, 'create'])->name('countries.create');
 Route::post('/countries', [CountryController::class, 'store'])->name('countries.store');
 Route::get('/countries/{country}/edit', [CountryController::class, 'edit'])->name('countries.edit');

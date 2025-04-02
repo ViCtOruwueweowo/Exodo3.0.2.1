@@ -4,13 +4,19 @@
 <div class="container-fluid">
     <h1 class="mb-3">Lista de Idiomas</h1>
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('languages.create') }}" class="btn btn-primary mb-3">Crear Nuevo Idioma</a>
+    @endif
 
     <div class="card">
         <div class="card-body">
@@ -21,7 +27,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Idioma</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +37,7 @@
                             <tr>
                                 <td>{{ $language->language_id }}</td>
                                 <td>{{ $language->name }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <!-- Enlace para editar el idioma -->
                                     <a href="{{ route('languages.edit', $language->language_id) }}" class="btn btn-warning btn-sm">Editar</a>
@@ -41,6 +50,7 @@
                                     </form>
 
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

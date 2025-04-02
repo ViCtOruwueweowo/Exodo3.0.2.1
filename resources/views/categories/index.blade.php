@@ -5,7 +5,13 @@
 <div class="container-fluid">
     <h1 class="mb-3">Lista de Categorías</h1>
 
+    @php
+        $role_id = request()->cookie('role_id');
+    @endphp
+
+    @if(in_array($role_id, [1, 2]))
     <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Crear Nueva Categoría</a>
+    @endif
 
     @if(session('success'))
         <div class="alert alert-success">
@@ -24,7 +30,9 @@
                             <th>ID</th>
                             <th>Nombre</th>
                             <th>Última actualización</th>
+                            @if(in_array($role_id, [1, 2]))
                             <th>Acciones</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -33,6 +41,7 @@
                                 <td>{{ $category->category_id }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->last_update }}</td>
+                                @if(in_array($role_id, [1, 2]))
                                 <td>
                                     <a href="{{ route('categories.edit', $category->category_id) }}" class="btn btn-warning btn-sm">Actualizar</a>
 
@@ -43,6 +52,7 @@
                                     </form>
 
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>

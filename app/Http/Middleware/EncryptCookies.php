@@ -12,6 +12,7 @@ class EncryptCookies extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'jwt_token',
+        'role_id' // Asegúrate de que jwt_token esté en el array $except
     ];
 }
